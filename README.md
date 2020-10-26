@@ -3,13 +3,13 @@ Supporting `rehype-all-the-thumbs` by finding the elements to be processed
 
 ## Overview
 
-Configuration:
+_Configuration_:
 - a SelectAll string
 
-Input:
+_Input_:
 - a HAST tree
 
-Output:
+_Output_:
 - unchanged HAST tree
 - vfile with added `srcs` key added to the object
 
