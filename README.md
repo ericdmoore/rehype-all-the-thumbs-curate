@@ -5,6 +5,7 @@ Supporting `rehype-all-the-thumbs` by finding the elements to be processed
 
 _Configuration_:
 - a SelectAll string
+- a default ResizerConfig
 
 _Input_:
 - a HAST tree
