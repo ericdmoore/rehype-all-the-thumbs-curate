@@ -1,9 +1,29 @@
 # rehype-all-the-thumbs-curate
-Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed
-
 > rehype-👍🏿👍🏼👍🏽👍🏻👍🏾 (Selecting Inputs)
 
+<!-- [![Build][build-badge]][build] -->
+<!-- [![Coverage][coverage-badge]][coverage] -->
+<!-- [![Downloads][downloads-badge]][downloads] -->
+<!-- [![Size][size-badge]][size] -->
+<!-- [![Sponsors][sponsors-badge]][collective] -->
+<!-- [![Backers][backers-badge]][collective] -->
+<!-- [![Chat][chat-badge]][chat] -->
+
+Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed
+
+## Install
+
+`npm i rehype-all-the-thumbs-curate` 
+
+or 
+
+`yarn add rehype-all-the-thumbs-curate`
+
 ## Overview
+
+So you looked at the ["easy option"](https://github.com/ericdmoore/rehype-all-the-thumbs), and needed more flexibilty. So down the rabbit trail we go, but now you can compose your own pipeline together tailor made to your needs, 🤘🏼 Rock On.
+
+If that sketch does not sound like the adventure you are on, you might want to try the "easy button" first. Head to the parent project [`rehype-all-the-thumbs` ](https://github.com/ericdmoore/rehype-all-the-thumbs)
 
 _Configuration_:
 - a SelectAll string
@@ -15,12 +35,6 @@ _Input_:
 _Output_:
 - unchanged HAST tree
 - vfile with added `srcs` key added to the object
-
-## Install
-
-`npm i rehype-all-the-thumbs-curate` 
-or 
-`yarn add rehype-all-the-thumbs-curate`
 
 ## Usage
 
@@ -37,6 +51,12 @@ unified()
 .use(curate)
 .use(stringer)
 .process(vf, (err, vfile)=>{
+    // srcs is an array,
+    // where the length is based on img srcs found in picture tags 
+    // which is the default CSS selector
+    // the other attributes are populated based on the defaults, and all are configurable
+    
+    // vfile has new sidecar data called srcs - an array of declarative instructions from which other plugins can make thumbnails.
     console.log( vfile.srcs )
 })
 ```
@@ -197,3 +217,12 @@ unified()
 [license]: LICENSE
 
 [author]: https://im.ericdmoore.com
+
+[build]
+[build-badge]
+[coverage]
+[coverage-badge]
+[downloads]
+[downloads-badge]
+[size]
+[size-badge]

@@ -27,6 +27,7 @@
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
     "gulp-jsdoc3": "^3.0.0",
+    "husky": "^4.3.0",
     "jsdoc": "^3.6.6",
     "minami": "^1.2.3",
     "nyc": "^15.0.0",
@@ -67,6 +68,12 @@
     "html",
     "tree"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
+  },
   "nyc": {
     "check-coverage": true,
     "lines": 100,

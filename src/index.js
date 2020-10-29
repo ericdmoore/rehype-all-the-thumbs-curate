@@ -14,6 +14,7 @@
 
 const { selectAll } = require('hast-util-select')
 const JSON5 = require('json5')
+const {isArray} = Array
 
 /**
  * Merge
@@ -169,7 +170,8 @@ const attacher = (config)=>{
             })
             )
         // console.log(3, JSON.stringify({ srcs }, null, 2))
-        vfile.srcs = srcs
+        const allSrcs = isArray(vfile.srcs) ? srcs.concat(vfile.srcs) : srcs
+        vfile.srcs = allSrcs
         next(null, tree, vfile)
     }
 }
