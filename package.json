@@ -3,29 +3,25 @@
   "version": "0.1.0",
   "description": "Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed",
   "main": "src/index.js",
-  "directories": {
-    "lib": "src",
-    "doc": "docs",
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "nyc tape tests/**/*.test.js | tap-nyc",
-    "docs": "gulp doc && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html"
+  "author": "Eric D Moore",
+  "license": "MIT",
+  "homepage": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate#readme",
+  "bugs": {
+    "url": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ericdmoore/rehype-all-the-thumbs-curate.git"
   },
-  "keywords": [
-    "rehype",
-    "rehypejs",
-    "unified",
-    "unifiedjs",
-    "thumbnails",
-    "picture",
-    "responsive",
-    "images"
-  ],
+  "scripts": {
+    "test": "nyc tape tests/**/*.test.js | tap-nyc",
+    "docs": "gulp doc && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
+    "_docs": "jsdoc src/index.js -c .jsdoc.json && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html"
+  },
+  "dependencies": {
+    "hast-util-select": "^4.0.0",
+    "json5": "^2.1.3"
+  },
   "devDependencies": {
     "eslint": "^7.12.1",
     "gulp": "^4.0.2",
@@ -52,12 +48,25 @@
     "vfile-reporter": "^6.0.1",
     "vfile-reporter-pretty": "^5.0.0"
   },
-  "author": "Eric D Moore",
-  "license": "MIT",
-  "homepage": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate#readme",
-  "bugs": {
-    "url": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate/issues"
+  "directories": {
+    "lib": "src",
+    "doc": "docs",
+    "test": "tests"
   },
+  "keywords": [
+    "unified",
+    "unifiedjs",
+    "rehype",
+    "rehypejs",
+    "rehype-plugin",
+    "plugin",
+    "thumbnails",
+    "picture",
+    "responsive",
+    "images",
+    "html",
+    "tree"
+  ],
   "nyc": {
     "check-coverage": true,
     "lines": 100,
@@ -71,23 +80,5 @@
     "bracketSpacing": false,
     "semi": false,
     "trailingComma": "none"
-  },
-  "xo": {
-    "prettier": true,
-    "esnext": false,
-    "rules": {},
-    "ignores": [
-      "**/types",
-      "remark.js"
-    ]
-  },
-  "remarkConfig": {
-    "plugins": [
-      "preset-wooorm"
-    ]
-  },
-  "dependencies": {
-    "hast-util-select": "^4.0.0",
-    "json5": "^2.1.3"
   }
 }

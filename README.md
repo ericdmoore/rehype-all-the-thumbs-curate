@@ -16,6 +16,68 @@ _Output_:
 - unchanged HAST tree
 - vfile with added `srcs` key added to the object
 
+## Install
+
+`npm i rehype-all-the-thumbs-curate` 
+or 
+`yarn add rehype-all-the-thumbs-curate`
+
+## Usage
+
+### Simple
+
+```js
+const unified = require('unified')
+const parse = require('rehype-parse')
+const curate = require('rehype-all-the-thumbs-curate')
+const stringer = require('rehype-stringify')
+
+unified()
+.use(parse)
+.use(curate)
+.use(stringer)
+.process(vf, (err, vfile)=>{
+    console.log( vfile.srcs )
+})
+```
+
+
+### Basic
+
+```js
+const unified = require('unified')
+const parse = require('rehype-parse')
+const curate = require('rehype-all-the-thumbs-curate')
+const stringer = require('rehype-stringify')
+
+unified()
+.use(parse)
+.use(curate)
+.use(stringer)
+.process(vf, (err, vfile)=>{
+    console.log( vfile.srcs )
+})
+```
+
+### Advanced
+
+```js
+const unified = require('unified')
+const parse = require('rehype-parse')
+const curate = require('rehype-all-the-thumbs-curate')
+const stringer = require('rehype-stringify')
+
+unified()
+.use(parse)
+.use(curate)
+.use(stringer)
+.process(vf, (err, vfile)=>{
+    console.log( vfile.srcs )
+})
+```
+
+
+
 ## Srcs
 
 `srcs` is a `ResizerConfig[]`
@@ -24,16 +86,40 @@ _Output_:
 
 /**
  *
+ * @typedef InboundConfig
+ * @type {object}
+ * @property {string | StringThunk } [select] - a CSS selector string for how to find the DOM nodes that have the data of interest.
+ * @property {string} [sourcePrefix] -  the path string that provides the required folder context to load a src file from the fs
+ * @property {string} [destBasePath] -  the path string that provides folder context for where to put the string 
+ * @property {number[]} [widths] - breakpoints + 1 for larger than last break
+ * @property {number[]} [breaks] - where are the image breakpoints - defined by max applicable 769, 1088, 1280
+ * @property {FormatOptions} [types] - jpg:{} | webp:{} | heif:{}
+ * @property {number} [hashlen] - default = 8;
+ * @property {string} [addclassnames] -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {string} [prefix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {string} [suffix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ */
+
+/**
+ *
  * @typedef ResizerConfig
- * @type {Object}
- * @property {string} basePath - root/parent folder of the output tree
+ * @type {object}
+ * @property {string} selectedBy - the CSS selctor used to get to this node
+ * @property {string} sourcePrefix - the path string that provides the required folder context to load a src file from the fs
+ * @property {string} destBasePath - the path string that provides folder context for where to put the string 
  * @property {number[]} widths - breakpoints + 1 for larger than last break
  * @property {number[]} breaks - where are the image breakpoints - defined by max applicable 769, 1088, 1280
  * @property {FormatOptions} types - jpg:{} | webp:{} | heif:{}
- * @property {number} hashLen - default = 8;
- * @property {string} class -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {number} hashlen - default = 8;
+ * @property {string} addclassnames -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  * @property {string} prefix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  * @property {string} suffix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ */
+
+/**
+ * @typedef StringThunk
+ * @type {Function}
+ * @returns {string}
  */
 
 /**

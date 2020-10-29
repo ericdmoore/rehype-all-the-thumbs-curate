@@ -24,7 +24,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#default">default</a></span></li>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-rehype-all-the-thumbs-curate.html">rehype-all-the-thumbs-curate</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#merge">merge</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#noChange">noChange</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#noChangeJustSwapPath">noChangeJustSwapPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#parseIfString">parseIfString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#parseStringsAndSwapPath">parseStringsAndSwapPath</a></span></li>
 </nav>
 
 <div id="main">
@@ -39,65 +39,199 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * # rehype-all-the-thumbs-curate
+            <pre class="prettyprint source linenums"><code>/** 
+ * @title rehype-all-the-thumbs-curate
+ * @author Eric Moore
  * @summary Select DOM nodes that have images availble for thumbnailing
  * @description Pluck out Images, and tag the file with instructions for 
  * other thumbnailing plugins to use.
- * ### Input
+ * 
+ * Input
  *   css selctor string + Instruction Information for thumbnailing images
- * ### Output
+ * Output
  *   an unchanged tree (aka: vfile.contents)
  * @see https://unifiedjs.com/explore/package/hast-util-select/#support
- * @author Eric Moore
  */
+
+const { selectAll } = require('hast-util-select')
+const JSON5 = require('json5')
 
 /**
- * @param { string | StringThunk }  [select] - a CSS selector string (default: picture > img[thumbnails="true"] )
- * @param { PartialResizerConfig } [config] - configuration
+ * Merge
+ * @private
+ * @param {Object.&lt;string, Function>} paths - list of depth:1 property strings that 
+ * @param {object} fallback - a fallback back object that has the property (hopefully)
+ * @param {object} obj - the target object that might have the path of interest
+ * @return {object}
  */
-exports.default = (select, config)=>{
-    select = !select 
+const merge = (paths, fallback, obj) =>
+    Object.entries(paths)
+        .reduce((p,[prop, prepFn])=>
+            prop in obj 
+                ? prepFn(p, obj[prop])
+                : prop in fallback 
+                    ? {...p, [prop]: fallback[prop]}
+                    : p
+        ,{})
+
+
+/** 
+ * Map Builder: Parse String And Swap Path
+ * @private
+ * @description A builder function returning a key to ƒ.transform map.
+ * The 'look-up-key'º is mapped to a merge function.
+ * The ƒ.merge returns a new merged object, 
+ * where the 'look-up-key'º is replaced with the writePath during merge, and the val is parsed
+ * @param {string} readPath - keys to look for in an object
+ * @param {string} writePath - if you find the key, run the function on the whole object + the value,
+ * and add this reaplcer key into the closure that generates the new result.
+ * @returns {Object.&lt;string, mergeFunc_ValToObj>}
+*/
+const parseStringsAndSwapPath = (readPath, writePath)=>({ [readPath]: (a,s)=>({...a, [writePath]:JSON5.parse(s)}) })
+
+/**
+ * Map Builder: Swap Path
+ * @private
+ * @description A builder function returning a key to ƒ.transform map.
+ * The 'look-up-key'º (aka: readPath) is mapped to a merge function.
+ * The ƒ.merge function is given an accumulating merge object, and a value from one of 2 target objects depending on if its found.
+ * The ƒ.merge returns a merged object, and all it does it replce the look-up-keyº with the writePath
+ * and the val stays unchanged.
+ * @param {string} readPath - keys to look for in an object
+ * @param {string} writePath - if the key is found, the merge fucntion replaces
+ * the lookup-key with a writePath key which is baked into the
+ * @returns {Object.&lt;string, mergeFunc_stringVal>}
+ * @example
+ * const mergeMeIn = noChange('lookForThis', 'butEventuallyMakeItThis')
+ * console.log(mergeMeIn) // { lookForThis: (all, val) => ({...all, butEventuallyMakeItThis: val}) }
+ */
+const noChangeJustSwapPath = (readPath, writePath)=>({ [readPath]: (a,s)=>({...a, [writePath]:s}) })
+
+/**
+ * Map Builder: Indetity
+ * @private
+ * @description A builder function returning a key to ƒ.transform map.
+ * The look-up-key maps to a ƒ.merge.
+ * The ƒ.merge (inputs: (accum obj, val)) returns a merged object where the 'look-up-key'º maps to the unchanged val
+ * @param {string} spath - look-up-key string path
+ * @returns {Object.&lt;string, mergeFunc_stringVal>}
+ * @example
+ * const mergeMeIn = noChange('findTheKey')
+ * console.log(mergeMeIn) // { findTheKey: (all, val) => ({...all, findTheKey: val}) }
+ */
+const noChange = spath => ({ [spath]: (a,s)=>({...a, [spath]:s}) })
+
+/**
+ * Map Builder: Parse The Val
+ * @private
+ * @description  A builder function returning a key to ƒ.transform map.
+ * The returned object is merged into a configuration object used for merging objects.
+ * The `lookup-key` maps to a ƒ.merge.
+ * @param {string} spath - string path
+ * @returns {Object.&lt;strng, mergeFunc_ValToObj>}
+ */
+const parseIfString = (spath)=>({[spath]: (a,maybeS) => typeof maybeS ==='string' ? {...a, [spath]:JSON5.parse(maybeS)} : {...a, [spath]:maybeS }})
+
+const HASTpaths = {
+    ...noChange('selectedBy'),
+    ...noChangeJustSwapPath('dataSourceprefix','sourcePrefix'),
+    ...noChangeJustSwapPath('dataDestbasepath','destBasePath'),
+    ...noChangeJustSwapPath('dataPrefix','prefix'),
+    ...noChangeJustSwapPath('dataSuffix','suffix'),
+    ...parseStringsAndSwapPath('dataHashlen','hashlen'),
+    ...parseStringsAndSwapPath('dataClean','clean'),
+    ...parseStringsAndSwapPath('dataWidths','widths'),
+    ...parseStringsAndSwapPath('dataBreaks','breaks'),
+    dataAddclassnames: (a,sa)=>({...a, addclassnames: sa.split(' ')}),
+    dataTypes: (a,s)=>({...a, types: s.split(',').reduce((p,c)=>({...p,[c]:{}}),{}) })
+}
+const NORMpaths = {
+    ...noChange('selectedBy'),
+    ...noChange('sourcePrefix'),
+    ...noChange('destBasePath'),
+    ...noChange('prefix'),
+    ...noChange('suffix'),
+    ...noChange('hashlen'),
+    ...noChange('clean'),
+    ...noChange('addclassnames'),
+    ...parseIfString('widths'),
+    ...parseIfString('breaks'),
+    ...parseIfString('types'),
+}
+
+const mergeNode =  (fallback, ob) => merge(HASTpaths, fallback, ob.properties)
+const mergeConfig = (fallback, ob = {}) => merge(NORMpaths, fallback, ob)
+
+/**
+ * @exports rehype-all-the-thumbs-curate
+ * @description the `rehype-all-the-thumbs-curate` plugin adds a transformer to the pipeline.
+ * @param { InboundConfig } [config] - Instructions for a Resizer Algorithm to understand the types of thumbnails desired.
+ */
+const attacher = (config)=>{
+    const select = !config || !config.select 
         ? 'picture[thumbnails="true"]>img' 
-        : typeof select ==='string' 
-            ? select 
-            : select()
+        : typeof config.select ==='function' 
+            ? config.select() 
+            : config.select
 
-    config = {
-        basePath: '',
-        widths: [100, 250, 450, 600] ,
-        breaks: [640, 980, 1020],
+    const defaults = {
+        selectedBy: select,
+        sourcePrefix:'',
+        destBasePath:'',
+        hashlen: 8,
+        clean: true,
         types: {webp:{}, jpg:{}}, // where the empty object implies use the default for the format
+        breaks: [640, 980, 1020],
+        widths: [100, 250, 450, 600],
+        addclassnames: ['all-thumbed'],
         prefix: 'optim/',
-        className: 'thumbed',
-        suffix: '-{{width}}w-{{hash}}.{{ext}}',
-        ...(config || {}), 
+        suffix: '-{{width}}w-{{hash}}.{{ext}}' 
     }
+    // fallback to inlined defaults
+    /** @const ResizerConfig */
+    const cfg = mergeConfig(defaults, config)
     
-    return (tree, vfile)=>{
+    // console.log({select})
+    // console.log(0, {cfg})
 
-        console.log({config, tree, vfile, select})
+    // transformer
+    return (tree, vfile, next)=>{
+        // console.log(1,  JSON.stringify({ vfile1: vfile }, null, 2))
+        // console.log(2,  JSON.stringify({ cfg }, null, 2))
+        
+        const selected = selectAll(select, tree)
+        // console.log( JSON.stringify({ selected }, null, 2))
+        
+        const srcs = selected
+            .map(node => ({ node, src: node.properties.src }))
+            .map(({ src, node }) => ({ 
+                ...mergeConfig(cfg, mergeNode(cfg, node)), 
+                src
+            })
+            )
+        // console.log(3, JSON.stringify({ srcs }, null, 2))
+        vfile.srcs = srcs
+        next(null, tree, vfile)
     }
 }
 
-module.exports = exports
+exports = attacher
+module.exports = attacher
 
-/**
- * @typedef StringThunk
- * @type {Function}
- * @returns {string}
- */
+// #region interfaces
 
 /**
  *
- * @typedef PartialResizerConfig
+ * @typedef InboundConfig
  * @type {object}
- * @property {string} [basePath] - root/parent folder of the output tree
+ * @property {string | StringThunk } [select] - a CSS selector string for how to find the DOM nodes that have the data of interest.
+ * @property {string} [sourcePrefix] -  the path string that provides the required folder context to load a src file from the fs
+ * @property {string} [destBasePath] -  the path string that provides folder context for where to put the string 
  * @property {number[]} [widths] - breakpoints + 1 for larger than last break
  * @property {number[]} [breaks] - where are the image breakpoints - defined by max applicable 769, 1088, 1280
  * @property {FormatOptions} [types] - jpg:{} | webp:{} | heif:{}
- * @property {number} [hashLen] - default = 8;
- * @property {string} [class] -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {number} [hashlen] - default = 8;
+ * @property {string} [addclassnames] -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  * @property {string} [prefix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  * @property {string} [suffix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  */
@@ -106,14 +240,22 @@ module.exports = exports
  *
  * @typedef ResizerConfig
  * @type {object}
- * @property {string} basePath - root/parent folder of the output tree
+ * @property {string} selectedBy - the CSS selctor used to get to this node
+ * @property {string} sourcePrefix - the path string that provides the required folder context to load a src file from the fs
+ * @property {string} destBasePath - the path string that provides folder context for where to put the string 
  * @property {number[]} widths - breakpoints + 1 for larger than last break
  * @property {number[]} breaks - where are the image breakpoints - defined by max applicable 769, 1088, 1280
  * @property {FormatOptions} types - jpg:{} | webp:{} | heif:{}
- * @property {number} hashLen - default = 8;
- * @property {string} class -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {number} hashlen - default = 8;
+ * @property {string} addclassnames -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  * @property {string} prefix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  * @property {string} suffix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ */
+
+/**
+ * @typedef StringThunk
+ * @type {Function}
+ * @returns {string}
  */
 
 /**
@@ -169,7 +311,26 @@ module.exports = exports
 /**
  * @typedef HEIFoptsCompression
  * @type {'hevc' | 'avc' | 'jpeg' | 'av1' }
- */</code></pre>
+ */
+
+/**
+ * @typedef mergeFunc_ValToObj
+ * @type {Function}
+ * @param {object} all - the whole object that is being merged into 
+ * @param {string} val - the value to parsed and turned into a js object
+ * @returns {Object.&lt;string,object>}
+ */
+
+/**
+ * @typedef mergeFunc_stringVal
+ * @type {Function}
+ * @param {object} all - the whole object that is being merged into 
+ * @param {string} val - the value to parsed and turned into a js object
+ * @returns {Object.&lt;string,string>}
+ */
+
+
+// #endregion interfaces</code></pre>
         </article>
     </section>
 
@@ -181,7 +342,7 @@ module.exports = exports
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Oct 28 2020 09:21:38 GMT-0500 (Central Daylight Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu Oct 29 2020 09:30:30 GMT-0500 (Central Daylight Time) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
