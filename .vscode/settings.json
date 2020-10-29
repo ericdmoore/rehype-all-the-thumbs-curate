@@ -1,0 +1,7 @@
+{
+    "prettier.printWidth": 100,
+    "files.autoSave": "onFocusChange",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
+}

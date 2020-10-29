@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#default">default</a></span></li>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>rehype-all-the-thumbs-curate</h1>
+<p>Supporting <a href="https://github.com/ericdmoore/rehype-all-the-thumbs"><code>rehype-all-the-thumbs</code></a> by finding the elements to be processed</p>
+<blockquote>
+<p>rehype-👍🏿👍🏼👍🏽👍🏻👍🏾 (Selecting Inputs)</p>
+</blockquote>
+<h2>Overview</h2>
+<p><em>Configuration</em>:</p>
+<ul>
+<li>a SelectAll string</li>
+<li>a default ResizerConfig</li>
+</ul>
+<p><em>Input</em>:</p>
+<ul>
+<li>a HAST tree</li>
+</ul>
+<p><em>Output</em>:</p>
+<ul>
+<li>unchanged HAST tree</li>
+<li>vfile with added <code>srcs</code> key added to the object</li>
+</ul>
+<h2>Srcs</h2>
+<p><code>srcs</code> is a <code>ResizerConfig[]</code></p>
+<pre class="prettyprint source lang-js"><code>
+/**
+ *
+ * @typedef ResizerConfig
+ * @type {Object}
+ * @property {string} basePath - root/parent folder of the output tree
+ * @property {number[]} widths - breakpoints + 1 for larger than last break
+ * @property {number[]} breaks - where are the image breakpoints - defined by max applicable 769, 1088, 1280
+ * @property {FormatOptions} types - jpg:{} | webp:{} | heif:{}
+ * @property {number} hashLen - default = 8;
+ * @property {string} class -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ * @property {string} prefix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ * @property {string} suffix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ */
+
+/**
+ * @typedef FormatOption
+ * @type { (JPEG | WEBP | HEIF ) }
+ */
+
+/**
+ * @typedef FormatOptions
+ * @type { FormatOption[] }
+ */
+
+/**
+ * @typedef JPEG
+ * @type {Object}
+ * @property {JPEGopts} jpg - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef JPEGopts
+ * @type {Object}
+ * @property {number} [quality] - integer 1-100 (optional, default 80)
+ * @property {boolean} [progresive] - use progressive (interlace) scan (optional, default true)
+ */
+
+/**
+ * @typedef WEBP
+ * @type {Object}
+ * @property {WEBPopts} webp - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef WEBPopts
+ * @type {Object}
+ * @property {number} [quality] - integer 1-100 (optional, default 80)
+ * @property {boolean} [lossless] - use lossless compression mode (optional, default false)
+ */
+
+/**
+ * @typedef HEIF
+ * @type {Object}
+ * @property {HEIFopts} heif - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef HEIFopts
+ * @type {Object}
+ * @property {number} [quality] - quality, integer 1-100 (optional, default 80)
+ * @property {HEIFoptsCompression | false} [compression] - compression format: hevc, avc, jpeg, av1 (optional, default 'hevc')
+ * @property {boolean} [lossless] - use lossless compression (optional, default false)
+ */
+
+/**
+ * @typedef HEIFoptsCompression
+ * @type {'hevc' | 'avc' | 'jpeg' | 'av1' }
+ */
+
+</code></pre>
+<h2>Pairs Well With:</h2>
+<ul>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs">rehype-all-the-thumbs</a> ...like putting on velcro shoes</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-curate">rehype-all-the-thumbs-curate</a> (DOM -&gt; data.srcs)</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-create">rehype-all-the-thumbs-create</a> (data.srcs -&gt; data.newAssets)</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-manipulate">rehype-all-the-thumbs-manipulate</a> (data.newAssets -&gt; DOM)</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-obviate">rehype-all-the-thumbs-obviate</a> (data.newAssets.filter -&gt; data.newAssets)</li>
+<li><a href="https://github.com/ericdmoore/vfile-newAssets-generate">vfile-newAssets-generate</a> (data.newAssets -&gt; Side Effect Funtion to create the file)</li>
+</ul>
+<h2>License</h2>
+<p><a href="LICENSE">MIT</a> © <a href="https://im.ericdmoore.com">Eric D Moore</a></p>
+<!-- Definitions --></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Oct 28 2020 09:21:38 GMT-0500 (Central Daylight Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

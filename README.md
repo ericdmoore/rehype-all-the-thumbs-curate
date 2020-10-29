@@ -102,4 +102,12 @@ _Output_:
 - [rehype-all-the-thumbs-obviate](https://github.com/ericdmoore/rehype-all-the-thumbs-obviate) (data.newAssets.filter -> data.newAssets)
 - [vfile-newAssets-generate](https://github.com/ericdmoore/vfile-newAssets-generate) (data.newAssets -> Side Effect Funtion to create the file)
 
+## License
 
+[MIT][license] © [Eric D Moore][author]
+
+<!-- Definitions -->
+
+[license]: LICENSE
+
+[author]: https://im.ericdmoore.com

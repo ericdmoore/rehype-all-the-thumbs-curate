@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>index.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#default">default</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * # rehype-all-the-thumbs-curate
+ * @summary Select DOM nodes that have images availble for thumbnailing
+ * @description Pluck out Images, and tag the file with instructions for 
+ * other thumbnailing plugins to use.
+ * ### Input
+ *   css selctor string + Instruction Information for thumbnailing images
+ * ### Output
+ *   an unchanged tree (aka: vfile.contents)
+ * @see https://unifiedjs.com/explore/package/hast-util-select/#support
+ * @author Eric Moore
+ */
+
+/**
+ * @param { string | StringThunk }  [select] - a CSS selector string (default: picture > img[thumbnails="true"] )
+ * @param { PartialResizerConfig } [config] - configuration
+ */
+exports.default = (select, config)=>{
+    select = !select 
+        ? 'picture[thumbnails="true"]>img' 
+        : typeof select ==='string' 
+            ? select 
+            : select()
+
+    config = {
+        basePath: '',
+        widths: [100, 250, 450, 600] ,
+        breaks: [640, 980, 1020],
+        types: {webp:{}, jpg:{}}, // where the empty object implies use the default for the format
+        prefix: 'optim/',
+        className: 'thumbed',
+        suffix: '-{{width}}w-{{hash}}.{{ext}}',
+        ...(config || {}), 
+    }
+    
+    return (tree, vfile)=>{
+
+        console.log({config, tree, vfile, select})
+    }
+}
+
+module.exports = exports
+
+/**
+ * @typedef StringThunk
+ * @type {Function}
+ * @returns {string}
+ */
+
+/**
+ *
+ * @typedef PartialResizerConfig
+ * @type {object}
+ * @property {string} [basePath] - root/parent folder of the output tree
+ * @property {number[]} [widths] - breakpoints + 1 for larger than last break
+ * @property {number[]} [breaks] - where are the image breakpoints - defined by max applicable 769, 1088, 1280
+ * @property {FormatOptions} [types] - jpg:{} | webp:{} | heif:{}
+ * @property {number} [hashLen] - default = 8;
+ * @property {string} [class] -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {string} [prefix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {string} [suffix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ */
+
+/**
+ *
+ * @typedef ResizerConfig
+ * @type {object}
+ * @property {string} basePath - root/parent folder of the output tree
+ * @property {number[]} widths - breakpoints + 1 for larger than last break
+ * @property {number[]} breaks - where are the image breakpoints - defined by max applicable 769, 1088, 1280
+ * @property {FormatOptions} types - jpg:{} | webp:{} | heif:{}
+ * @property {number} hashLen - default = 8;
+ * @property {string} class -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {string} prefix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * @property {string} suffix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ */
+
+/**
+ * @typedef FormatOption
+ * @type { (JPEG | WEBP | HEIF ) }
+ */
+
+/**
+ * @typedef FormatOptions
+ * @type { FormatOption[] }
+ */
+
+/**
+ * @typedef JPEG
+ * @type {Object}
+ * @property {JPEGopts} jpg - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef JPEGopts
+ * @type {Object}
+ * @property {number} [quality] - integer 1-100 (optional, default 80)
+ * @property {boolean} [progresive] - use progressive (interlace) scan (optional, default true)
+ */
+
+/**
+ * @typedef WEBP
+ * @type {Object}
+ * @property {WEBPopts} webp - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef WEBPopts
+ * @type {Object}
+ * @property {number} [quality] - integer 1-100 (optional, default 80)
+ * @property {boolean} [lossless] - use lossless compression mode (optional, default false)
+ */
+
+/**
+ * @typedef HEIF
+ * @type {Object}
+ * @property {HEIFopts} heif - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef HEIFopts
+ * @type {Object}
+ * @property {number} [quality] - quality, integer 1-100 (optional, default 80)
+ * @property {HEIFoptsCompression | false} [compression] - compression format: hevc, avc, jpeg, av1 (optional, default 'hevc')
+ * @property {boolean} [lossless] - use lossless compression (optional, default false)
+ */
+
+/**
+ * @typedef HEIFoptsCompression
+ * @type {'hevc' | 'avc' | 'jpeg' | 'av1' }
+ */</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Oct 28 2020 09:21:38 GMT-0500 (Central Daylight Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
