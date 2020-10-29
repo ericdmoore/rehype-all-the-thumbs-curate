@@ -15,7 +15,7 @@ const vfile = require('vfile')
 // const prettyReporter = require('vfile-reporter-pretty')
 const reporter = require('vfile-reporter')
 
-
+// #region helpers
 const isPropertyInAll = arr => propName => arr.reduce((p,cofA)=>p && propName in cofA, true)
 const isPropAlways = arr => (propName, typeTest) => arr.reduce((p,cofA)=> p && typeTest(cofA[propName]), true)
 const isString = (s)=> typeof s === 'string' || s instanceof String
@@ -35,7 +35,9 @@ const checkAllPropTypes = (t, arr, props2Msg)=>{
     return Object.entries(props2Msg)
         .map(([propName, {msg, test}]) => {return () => t.ok( checkProp(propName, test), msg ) } )   
 }
+// #endregion helpers
 
+// #region configure shorthand definitions
 const propDefs = {
     widths:       '∀ vfile.srcs; ∃ .widths',
     breaks:       '∀ vfile.srcs; ∃ .breaks',
@@ -61,7 +63,9 @@ const typeAsserts =  {
     destBasePath: {test: isString, msg:'`destBasePath` should always be a string'},
 }
 
-test('Zero Config', function (t) {
+// #endregion configure shorthand definitions
+
+test('Zero Config', (t) => {
     const filepath = './fixtures/ex1.html'
     const loadPath = path.resolve(__dirname, filepath)
     fs.readFile(loadPath, (err, fileB)=>{
@@ -97,7 +101,7 @@ test('Zero Config', function (t) {
     })
 })
 
-test('String Config', function (t) {
+test('String Config', (t) => {
     const filepath = './fixtures/ex1.html'
     const loadPath = path.resolve(__dirname, filepath)
     fs.readFile(loadPath, (err, fileB)=>{
@@ -130,7 +134,7 @@ test('String Config', function (t) {
     })
 })
 
-test('StringThunk Config', (t)=>{
+test('StringThunk Config', (t) => {
     const filepath = './fixtures/ex2.html'
     const loadPath = path.resolve(__dirname, filepath)
     fs.readFile(loadPath, (err, fileB)=>{
@@ -162,7 +166,7 @@ test('StringThunk Config', (t)=>{
     })
 })
 
-test('Extraneous Config Is Ignored', (t)=>{
+test('Extraneous Config Is Ignored', (t) => {
     const filepath = './fixtures/ex2.html'
     const loadPath = path.resolve(__dirname, filepath)
     fs.readFile(loadPath, (err, fileB)=>{
@@ -193,7 +197,7 @@ test('Extraneous Config Is Ignored', (t)=>{
     })
 })
 
-test('SRCS Shape is unchanged when leveraging data-attribs form the DOM', (t)=>{
+test('SRCS Shape is unchanged when leveraging data-attribs form the DOM', (t) => {
     const filepath = './fixtures/ex3.html'
     const loadPath = path.resolve(__dirname, filepath)
     fs.readFile(loadPath, (err, fileB)=>{
@@ -273,6 +277,37 @@ test('Check the values of .srcs[] based on ex3 fixture', (t) => {
             .use(stringer)
             .process(vf, (err, vfile)=>{
                 t.deepEqual(vfile.srcs, exp)
+                t.end()
+            })
+    })
+})
+
+test.skip('existing srcs stay intact .srcs[] <based on ex3 fixture>', (t) => {
+    const filepath = './fixtures/ex3.html'
+    const loadPath = path.resolve(__dirname, filepath)
+
+    fs.readFile(loadPath, (err, fileB)=>{
+        if(err){throw new Error(err)}
+        const vf = new vfile({
+            path: filepath,
+            cwd: __dirname, 
+            contents: fileB.toString()
+        })
+        unified()
+            .use(parse)
+            .use(curate, {
+                select: 'picture>img[data-thumbnails="true"]',
+                breaks: '[601, 901, 1021]',
+                widths: '[101, 251, 451, 601]',
+                types: '{"jpg":{progressive:true}}'
+            })
+            .use(curate, {
+                select:'picture[thumbnails="true"]>img'
+            })
+            .use(stringer)
+            .process(vf, (err, vfile)=>{
+                console.log({srcs: vfile.srcs})
+                // t.deepEqual(vfile.srcs, exp)
                 t.end()
             })
     })
