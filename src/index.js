@@ -12,7 +12,7 @@
  * @see https://unifiedjs.com/explore/package/hast-util-select/#support
  */
 
-const {isArray} = Array
+const { isArray } = Array
 const { selectAll } = require('hast-util-select')
 
 /**

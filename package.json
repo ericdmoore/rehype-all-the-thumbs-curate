@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "files": [
     "dist/umd/index.js",
-    "dist/index.min.js"
+    "dist/index.min.js",
+    "tests/*"
   ],
   
   "scripts": {
