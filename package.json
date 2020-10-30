@@ -3,20 +3,11 @@
   "version": "0.1.0",
   "description": "Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed",
   "main": "src/index.js",
-  "author": "Eric D Moore",
-  "license": "MIT",
-  "homepage": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate#readme",
-  "bugs": {
-    "url": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate/issues"
-  },
   "files": [
     "dist/umd/index.js",
     "dist/index.min.js"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ericdmoore/rehype-all-the-thumbs-curate.git"
-  },
+  
   "scripts": {
     "test": "tape tests/**/*.test.js",
     "test:NYC": "nyc npm test | tap-nyc",
@@ -25,13 +16,12 @@
     "covEmit": "nyc report --reporter=text-lcov | codecov -t ${CODECOV_TOKEN} --pipe",
     "coverage": "npm run covEmit",
     "lint": "eslint src/index.js",
-    "build":"npm run build:umd && npm run build:min",
+    "build":"mkdir -p dist/umd && npm run build:umd && npm run build:min",
     "build:umd": "esbuild src/index.js --bundle > dist/umd/index.js",
     "build:min": "esbuild src/index.js --bundle --minify > dist/index.min.js" 
   },
   "dependencies": {
-    "hast-util-select": "^4.0.0",
-    "json5": "^2.1.3"
+    "hast-util-select": "^4.0.0"
   },
   "devDependencies": {
     "codecov": "^3.8.0",
@@ -62,6 +52,16 @@
     "vfile": "^4.2.0",
     "vfile-reporter": "^6.0.1",
     "vfile-reporter-pretty": "^5.0.0"
+  },
+  "author": "Eric D Moore",
+  "license": "MIT",
+  "homepage": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate#readme",
+  "bugs": {
+    "url": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericdmoore/rehype-all-the-thumbs-curate.git"
   },
   "husky": {
     "hooks": {
