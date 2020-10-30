@@ -1,12 +1,11 @@
 {
   "name": "rehype-all-the-thumbs-curate",
   "version": "0.2.0",
-  "description": "Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed",
+  "description": "Supporting rehype-all-the-thumbs by finding elements to be processed",
   "main": "src/index.js",
   "files": [
     "dist/umd/index.js",
-    "dist/index.min.js",
-    "tests/*"
+    "dist/index.min.js"
   ],
   "scripts": {
     "test": "nyc tape tests/**/*.test.js | tap-nyc",

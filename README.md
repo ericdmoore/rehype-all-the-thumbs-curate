@@ -21,18 +21,18 @@ or
 
 ## Overview
 
-So you looked at the ["easy option"](https://github.com/ericdmoore/rehype-all-the-thumbs), and needed more flexibilty. So down the rabbit trail we go, but now you can compose your own pipeline together tailor made to your needs, 🤘🏼 Rock On.
+So tried the ["easy button"](https://github.com/ericdmoore/rehype-all-the-thumbs), and needed more flexibilty. So down the rabbit trail we go, but now you can compose your own pipeline together tailor made to your needs, 🤘🏼 Rock On.
 
 If that sketch does not sound like the adventure you are on, you might want to try the "easy button" first. Head to the parent project [`rehype-all-the-thumbs` ](https://github.com/ericdmoore/rehype-all-the-thumbs)
 
-_Configuration_:
+**_Configuration_**:
 - a SelectAll string
 - a default ResizerConfig
 
-_Input_:
+**_Input_**:
 - a HAST tree
 
-_Output_:
+**_Output_**:
 - unchanged HAST tree
 - vfile with added `srcs` key added to the object
 
@@ -96,9 +96,20 @@ unified()
 })
 ```
 
+## Pairs Well With:
 
+- [rehype-all-the-thumbs](https://github.com/ericdmoore/rehype-all-the-thumbs) ...like putting on velcro shoes
+- [rehype-all-the-thumbs-curate](https://github.com/ericdmoore/rehype-all-the-thumbs-curate) (DOM -> data.srcs)
+- [rehype-all-the-thumbs-create](https://github.com/ericdmoore/rehype-all-the-thumbs-create) (data.srcs -> data.newAssets)
+- [rehype-all-the-thumbs-manipulate](https://github.com/ericdmoore/rehype-all-the-thumbs-manipulate) (data.newAssets -> DOM)
+- [rehype-all-the-thumbs-obviate](https://github.com/ericdmoore/rehype-all-the-thumbs-obviate) (data.newAssets.filter -> data.newAssets)
+- [vfile-newAssets-generate](https://github.com/ericdmoore/vfile-newAssets-generate) (data.newAssets -> Side Effect Funtion to create the file)
 
-## Srcs
+## License
+
+[MIT][license] © [Eric D Moore][author]
+
+## Srcs Type Preview
 
 `srcs` is a `ResizerConfig[]`
 
@@ -199,18 +210,6 @@ unified()
 
 ```
 
-## Pairs Well With:
-
-- [rehype-all-the-thumbs](https://github.com/ericdmoore/rehype-all-the-thumbs) ...like putting on velcro shoes
-- [rehype-all-the-thumbs-curate](https://github.com/ericdmoore/rehype-all-the-thumbs-curate) (DOM -> data.srcs)
-- [rehype-all-the-thumbs-create](https://github.com/ericdmoore/rehype-all-the-thumbs-create) (data.srcs -> data.newAssets)
-- [rehype-all-the-thumbs-manipulate](https://github.com/ericdmoore/rehype-all-the-thumbs-manipulate) (data.newAssets -> DOM)
-- [rehype-all-the-thumbs-obviate](https://github.com/ericdmoore/rehype-all-the-thumbs-obviate) (data.newAssets.filter -> data.newAssets)
-- [vfile-newAssets-generate](https://github.com/ericdmoore/vfile-newAssets-generate) (data.newAssets -> Side Effect Funtion to create the file)
-
-## License
-
-[MIT][license] © [Eric D Moore][author]
 
 <!-- Definitions -->
 
