@@ -8,14 +8,12 @@
     "dist/index.min.js",
     "tests/*"
   ],
-  
   "scripts": {
-    "test": "tape tests/**/*.test.js",
+    "test": "nyc tape tests/**/*.test.js | tap-nyc",
     "test:NYC": "nyc npm test | tap-nyc",
     "docs": "gulp doc && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
     "_docs": "jsdoc src/index.js -c .jsdoc.json && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
-    "covEmit": "nyc report --reporter=text-lcov | codecov -t ${CODECOV_TOKEN} --pipe",
-    "coverage": "npm run covEmit",
+    "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
     "lint": "eslint src/index.js",
     "build":"mkdir -p dist/umd && npm run build:umd && npm run build:min",
     "build:umd": "esbuild src/index.js --bundle > dist/umd/index.js",
