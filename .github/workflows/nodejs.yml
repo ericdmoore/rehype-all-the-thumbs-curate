@@ -39,8 +39,8 @@ jobs:
       env: 
         CODECOV_TOKEN : ${{ secrets.CODECOV_TOKEN }}
       run: |
-        npm run test && 
-        npm run reportCov
+        npm run test:NYC
+        npx nyc report --reporter=text-lcov | npx codecov -t ${{ secrets.CODECOV_TOKEN }} --pipe
 
 # steps:
 # - uses: actions/checkout@master

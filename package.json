@@ -15,12 +15,11 @@
   },
   "scripts": {
     "test": "tape tests/**/*.test.js",
-    "test:NYC": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov",
+    "test:NYC": "nyc npm test",
     "docs": "gulp doc && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
     "_docs": "jsdoc src/index.js -c .jsdoc.json && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
-    "covGen":"npm run test:NYC",
-    "covEmit":"codecov < coverage.lcov",
-    "coverage":"npm run covGen && npm run covEmit"
+    "covEmit": "nyc report --reporter=text-lcov | codecov -t ${CODECOV_TOKEN} --pipe",
+    "coverage": "npm run covEmit"
   },
   "dependencies": {
     "hast-util-select": "^4.0.0",
@@ -35,6 +34,7 @@
     "husky": "^4.3.0",
     "jsdoc": "^3.6.6",
     "minami": "^1.2.3",
+    "np": "^7.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.1.2",
     "rehype-format": "^3.1.0",
