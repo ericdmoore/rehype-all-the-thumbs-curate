@@ -1,6 +1,6 @@
 {
   "name": "rehype-all-the-thumbs-curate",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed",
   "main": "src/index.js",
   "files": [
@@ -15,9 +15,9 @@
     "_docs": "jsdoc src/index.js -c .jsdoc.json && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
     "lint": "eslint src/index.js",
-    "build":"mkdir -p dist/umd && npm run build:umd && npm run build:min",
+    "build": "mkdir -p dist/umd && npm run build:umd && npm run build:min",
     "build:umd": "esbuild src/index.js --bundle > dist/umd/index.js",
-    "build:min": "esbuild src/index.js --bundle --minify > dist/index.min.js" 
+    "build:min": "esbuild src/index.js --bundle --minify > dist/index.min.js"
   },
   "dependencies": {
     "hast-util-select": "^4.0.0"
