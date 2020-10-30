@@ -1,10 +1,10 @@
 # rehype-all-the-thumbs-curate
 > rehype-👍🏿👍🏼👍🏽👍🏻👍🏾 (Selecting Inputs)
 
-<!-- [![Build][build-badge]][build] -->
-<!-- [![Coverage][coverage-badge]][coverage] -->
+[![Build][build-badge]][build]
+[![Coverage][coverage-badge]][coverage]
+[![Size][size-badge]][size]
 <!-- [![Downloads][downloads-badge]][downloads] -->
-<!-- [![Size][size-badge]][size] -->
 <!-- [![Sponsors][sponsors-badge]][collective] -->
 <!-- [![Backers][backers-badge]][collective] -->
 <!-- [![Chat][chat-badge]][chat] -->
@@ -218,11 +218,11 @@ unified()
 
 [author]: https://im.ericdmoore.com
 
-[build]
-[build-badge]
-[coverage]
-[coverage-badge]
-[downloads]
-[downloads-badge]
-[size]
-[size-badge]
+[build]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3A%22Build+%26+Tests%22
+[build-badge]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Build%20&%20Tests/badge.svg
+[coverage]: https://codecov.io/gh/ericdmoore/rehype-all-the-thumbs-curate
+[coverage-badge]: https://img.shields.io/codecov/c/gh/ericdmoore/rehype-all-the-thumbs-curate
+[size]:https://bundlephobia.com/result?p=rehype-all-the-thumbs-curate
+[size-badge]:https://img.shields.io/bundlephobia/minzip/rehype-all-the-thumbs-curate?style=flat-square
+<!-- [downloads] -->
+<!-- [downloads-badge] -->
