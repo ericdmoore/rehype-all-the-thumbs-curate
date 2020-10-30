@@ -213,7 +213,7 @@ test('SRCS Shape is unchanged when leveraging data-attribs form the DOM', (t) =>
                 select:'picture>img[data-thumbnails="true"]', 
                 breaks:'[601, 901, 1021]', 
                 widths:'[101, 251, 451, 601]', 
-                types:'{"jpg":{progressive:true}}'
+                types:'{"jpg":{"progressive":true}}'
             })
             .use(stringer)
             .process(vf, (err, vfile)=>{
@@ -272,7 +272,7 @@ test('Check the values of .srcs[] based on ex3 fixture', (t) => {
                 select:'picture>img[data-thumbnails="true"]', 
                 breaks:'[601, 901, 1021]', 
                 widths:'[101, 251, 451, 601]', 
-                types:'{"jpg":{progressive:true}}'
+                types:'{"jpg":{"progressive":true}}'
             })
             .use(stringer)
             .process(vf, (err, vfile)=>{
@@ -299,7 +299,7 @@ test.skip('existing srcs stay intact .srcs[] <based on ex3 fixture>', (t) => {
                 select: 'picture>img[data-thumbnails="true"]',
                 breaks: '[601, 901, 1021]',
                 widths: '[101, 251, 451, 601]',
-                types: '{"jpg":{progressive:true}}'
+                types: '{"jpg":{"progressive":true}}'
             })
             .use(curate, {
                 select:'picture[thumbnails="true"]>img'

@@ -12,9 +12,8 @@
  * @see https://unifiedjs.com/explore/package/hast-util-select/#support
  */
 
-const { selectAll } = require('hast-util-select')
-const JSON5 = require('json5')
 const {isArray} = Array
+const { selectAll } = require('hast-util-select')
 
 /**
  * Merge
@@ -47,7 +46,7 @@ const merge = (paths, fallback, obj) =>
  * and add this reaplcer key into the closure that generates the new result.
  * @returns {Object.<string, mergeFunc_ValToObj>}
 */
-const parseStringsAndSwapPath = (readPath, writePath)=>({ [readPath]: (a,s)=>({...a, [writePath]:JSON5.parse(s)}) })
+const parseStringsAndSwapPath = (readPath, writePath)=>({ [readPath]: (a,s)=>({...a, [writePath]:JSON.parse(s)}) })
 
 /**
  * Map Builder: Swap Path
@@ -90,7 +89,7 @@ const noChange = spath => ({ [spath]: (a,s)=>({...a, [spath]:s}) })
  * @param {string} spath - string path
  * @returns {Object.<strng, mergeFunc_ValToObj>}
  */
-const parseIfString = (spath)=>({[spath]: (a,maybeS) => typeof maybeS ==='string' ? {...a, [spath]:JSON5.parse(maybeS)} : {...a, [spath]:maybeS }})
+const parseIfString = (spath)=>({[spath]: (a,maybeS) => typeof maybeS ==='string' ? {...a, [spath]:JSON.parse(maybeS)} : {...a, [spath]:maybeS }})
 
 const HASTpaths = {
     ...noChange('selectedBy'),

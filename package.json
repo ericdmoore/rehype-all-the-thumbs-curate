@@ -9,17 +9,25 @@
   "bugs": {
     "url": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate/issues"
   },
+  "files": [
+    "dist/umd/index.js",
+    "dist/index.min.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ericdmoore/rehype-all-the-thumbs-curate.git"
   },
   "scripts": {
     "test": "tape tests/**/*.test.js",
-    "test:NYC": "nyc npm test",
+    "test:NYC": "nyc npm test | tap-nyc",
     "docs": "gulp doc && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
     "_docs": "jsdoc src/index.js -c .jsdoc.json && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
     "covEmit": "nyc report --reporter=text-lcov | codecov -t ${CODECOV_TOKEN} --pipe",
-    "coverage": "npm run covEmit"
+    "coverage": "npm run covEmit",
+    "lint": "eslint src/index.js",
+    "build":"npm run build:umd && npm run build:min",
+    "build:umd": "esbuild src/index.js --bundle > dist/umd/index.js",
+    "build:min": "esbuild src/index.js --bundle --minify > dist/index.min.js" 
   },
   "dependencies": {
     "hast-util-select": "^4.0.0",
@@ -27,6 +35,7 @@
   },
   "devDependencies": {
     "codecov": "^3.8.0",
+    "esbuild": "^0.8.0",
     "eslint": "^7.12.1",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
