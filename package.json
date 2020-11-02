@@ -8,7 +8,7 @@
     "dist/index.min.js"
   ],
   "scripts": {
-    "test": "nyc tape tests/**/*.test.js | tap-nyc",
+    "test": "tape tests/**/*.test.js",
     "test:NYC": "nyc npm test | tap-nyc",
     "docs": "gulp doc && npm run openDocs",
     "_docs": "jsdoc src/index.js -c .jsdoc.json",
