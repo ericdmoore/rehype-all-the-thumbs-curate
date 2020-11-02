@@ -14,7 +14,7 @@
 <!-- [![Backers][backers-badge]][collective] -->
 <!-- [![Chat][chat-badge]][chat] -->
 
-Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed
+Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements for processing via [CSS Selector Strings](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
 
 ![Rehype-All-The-Thumbs-Curate](pics/title.svg)
 
@@ -35,14 +35,14 @@ So you tried the ["easy button"](https://github.com/ericdmoore/rehype-all-the-th
 If that sketch does not sound like the adventure you are on, you might want to try the ["easy button"](https://github.com/ericdmoore/rehype-all-the-thumbs) first. Head to the parent project (aka: easy button) [`rehype-all-the-thumbs` ](https://github.com/ericdmoore/rehype-all-the-thumbs)
 
 **_Configuration_**:
-- a SelectAll string
-- a default ResizerConfig
+- a [CSS Selector string](https://github.com/syntax-tree/hast-util-select)
+- a default [ResizerConfig](#resizer_config)
 
 **_Input_**:
-- a HAST tree
+- a [HAST](https://github.com/syntax-tree/hast) tree
 
 **_Output_**:
-- unchanged HAST tree
+- unchanged [HAST](https://github.com/syntax-tree/hast) tree
 - vfile with added `srcs` key added to the object
 
 ## Usage
@@ -139,6 +139,11 @@ unified()
  * @property {string} [suffix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
  */
 
+``` 
+
+### Resizer Config 
+
+```js
 /**
  *
  * @typedef ResizerConfig
