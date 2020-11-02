@@ -5,6 +5,11 @@
 [![Tests][tests-badge]][tests]
 [![Coverage][coverage-badge]][coverage]
 [![Size][size-badge]][size]
+[![Issues][issues-badge]][issues]
+[![License][license-badge]][license]
+[![Quality Score][quality-badge]][quality]
+
+
 <!-- [![Downloads][downloads-badge]][downloads] -->
 <!-- [![Sponsors][sponsors-badge]][collective] -->
 <!-- [![Backers][backers-badge]][collective] -->
@@ -214,17 +219,23 @@ unified()
 
 <!-- Definitions -->
 
-[license]: LICENSE
-
 [author]: https://im.ericdmoore.com
-
 [coverage]: https://codecov.io/gh/ericdmoore/rehype-all-the-thumbs-curate
 [coverage-badge]: https://img.shields.io/codecov/c/gh/ericdmoore/rehype-all-the-thumbs-curate
 [size]:https://bundlephobia.com/result?p=rehype-all-the-thumbs-curate
-[size-badge]:https://img.shields.io/bundlephobia/minzip/rehype-all-the-thumbs-curate?style=flat-square
+[size-badge]:https://img.shields.io/bundlephobia/minzip/rehype-all-the-thumbs-curate
 [build]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3ATests
 [build-badge]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Build/badge.svg
 [tests]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3ATests
 [tests-badge]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Tests/badge.svg
+[license]: LICENSE
+[license-badge]:https://img.shields.io/github/license/ericdmoore/rehype-all-the-thumbs-curate
+[commits]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/commits/main
+[commits-badge]:https://img.shields.io/github/commit-activity/m/ericdmoore/rehype-all-the-thumbs-curate
+[issues]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/issues
+[issues-badge]:https://img.shields.io/github/issues/ericdmoore/rehype-all-the-thumbs-curate
+[quality]:https://scrutinizer-ci.com/g/ericdmoore/rehype-all-the-thumbs-curate/
+[quality-badge]:https://img.shields.io/scrutinizer/quality/g/ericdmoore/rehype-all-the-thumbs-curate
+
 <!-- [downloads] -->
 <!-- [downloads-badge] -->
