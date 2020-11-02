@@ -5,23 +5,6 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  build:
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: CheckOut Latest
-      uses: actions/checkout@v2
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run build
-
   test:
     runs-on: ubuntu-latest
     strategy:
