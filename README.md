@@ -15,6 +15,8 @@
 
 Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements to be processed
 
+![Rehype-All-The-Thumbs-Curate](pics/title.svg)
+
 ## Install
 
 `npm i rehype-all-the-thumbs-curate` 
