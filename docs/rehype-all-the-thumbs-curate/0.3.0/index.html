@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-rehype-all-the-thumbs-curate.html">rehype-all-the-thumbs-curate</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#merge">merge</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#noChange">noChange</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#noChangeJustSwapPath">noChangeJustSwapPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#parseIfString">parseIfString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#parseStringsAndSwapPath">parseStringsAndSwapPath</a></span></li>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>rehype-all-the-thumbs-curate</h1>
+<blockquote>
+<p>rehype-👍🏿👍🏼👍🏽👍🏻👍🏾 (Selecting Inputs)</p>
+</blockquote>
+<p><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3ATests"><img src="https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Build/badge.svg" alt="Build"></a>
+<a href="https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3ATests"><img src="https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Tests/badge.svg" alt="Tests"></a>
+<a href="https://codecov.io/gh/ericdmoore/rehype-all-the-thumbs-curate"><img src="https://img.shields.io/codecov/c/gh/ericdmoore/rehype-all-the-thumbs-curate" alt="Coverage"></a>
+<a href="https://bundlephobia.com/result?p=rehype-all-the-thumbs-curate"><img src="https://img.shields.io/bundlephobia/minzip/rehype-all-the-thumbs-curate" alt="Size"></a>
+<a href="https://github.com/ericdmoore/rehype-all-the-thumbs-curate/issues"><img src="https://img.shields.io/github/issues/ericdmoore/rehype-all-the-thumbs-curate" alt="Issues"></a>
+<a href="https://scrutinizer-ci.com/g/ericdmoore/rehype-all-the-thumbs-curate/"><img src="https://img.shields.io/scrutinizer/quality/g/ericdmoore/rehype-all-the-thumbs-curate" alt="Quality Score out of 10"></a>
+<a href="LICENSE"><img src="https://img.shields.io/github/license/ericdmoore/rehype-all-the-thumbs-curate" alt="License"></a>
+<a href="https://github.com/ericdmoore/rehype-all-the-thumbs-curate/commits/main"><img src="https://img.shields.io/github/commit-activity/m/ericdmoore/rehype-all-the-thumbs-curate?style=flat-square" alt="Commit Count"></a></p>
+<!-- [![Downloads][downloads-badge]][downloads] -->
+<!-- [![Sponsors][sponsors-badge]][collective] -->
+<!-- [![Backers][backers-badge]][collective] -->
+<!-- [![Chat][chat-badge]][chat] -->
+<p>Supporting <a href="https://github.com/ericdmoore/rehype-all-the-thumbs"><code>rehype-all-the-thumbs</code></a> by finding the elements for processing via <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors">CSS Selector Strings</a></p>
+<p><img src="pics/title.svg" alt="Rehype-All-The-Thumbs-Curate"></p>
+<h2>Install</h2>
+<p><code>npm i rehype-all-the-thumbs-curate</code></p>
+<p>or</p>
+<p><code>yarn add rehype-all-the-thumbs-curate</code></p>
+<h2>Overview</h2>
+<p>So you tried the <a href="https://github.com/ericdmoore/rehype-all-the-thumbs">&quot;easy button&quot;</a>, and needed more flexibilty? So down the rabbit trail we go. The good news is now you can compose your own pipeline together that is tailor made to your needs!</p>
+<p>🤘🏼 Rock On.</p>
+<p>If that sketch does not sound like the adventure you are on, you might want to try the <a href="https://github.com/ericdmoore/rehype-all-the-thumbs">&quot;easy button&quot;</a> first. Head to the parent project (aka: easy button) <a href="https://github.com/ericdmoore/rehype-all-the-thumbs"><code>rehype-all-the-thumbs</code> </a></p>
+<p><strong><em>Configuration</em></strong>:</p>
+<ul>
+<li>a <a href="https://github.com/syntax-tree/hast-util-select">CSS Selector string</a></li>
+<li>a default <a href="#resizer_config">ResizerConfig</a></li>
+</ul>
+<p><strong><em>Input</em></strong>:</p>
+<ul>
+<li>a <a href="https://github.com/syntax-tree/hast">HAST</a> tree</li>
+</ul>
+<p><strong><em>Output</em></strong>:</p>
+<ul>
+<li>unchanged <a href="https://github.com/syntax-tree/hast">HAST</a> tree</li>
+<li>vfile with added <code>srcs</code> key added to the object</li>
+</ul>
+<h2>Usage</h2>
+<h3>Simple</h3>
+<pre class="prettyprint source lang-js"><code>const unified = require('unified')
+const parse = require('rehype-parse')
+const curate = require('rehype-all-the-thumbs-curate')
+const stringer = require('rehype-stringify')
+
+unified()
+.use(parse)
+.use(curate)
+.use(stringer)
+.process(vf, (err, vfile)=>{
+    // srcs is an array,
+    // where the length is based on img srcs found in picture tags 
+    // which is the default CSS selector
+    // the other attributes are populated based on the defaults, and all are configurable
+    // vfile has new sidecar data called srcs - an array of declarative instructions from which other plugins can make thumbnails.
+    console.log( vfile.srcs )
+})
+</code></pre>
+<h3>Basic</h3>
+<pre class="prettyprint source lang-js"><code>const unified = require('unified')
+const parse = require('rehype-parse')
+const curate = require('rehype-all-the-thumbs-curate')
+const stringer = require('rehype-stringify')
+
+unified()
+.use(parse)
+.use(curate)
+.use(stringer)
+.process(vf, (err, vfile)=>{
+    console.log( vfile.srcs )
+})
+</code></pre>
+<h3>Advanced</h3>
+<pre class="prettyprint source lang-js"><code>const unified = require('unified')
+const parse = require('rehype-parse')
+const curate = require('rehype-all-the-thumbs-curate')
+const stringer = require('rehype-stringify')
+
+unified()
+.use(parse)
+.use(curate)
+.use(stringer)
+.process(vf, (err, vfile)=>{
+    console.log( vfile.srcs )
+})
+</code></pre>
+<h2>Pairs Well With:</h2>
+<ul>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs">rehype-all-the-thumbs</a> ...like putting on velcro shoes</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-curate">rehype-all-the-thumbs-curate</a> (DOM -&gt; data.srcs)</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-create">rehype-all-the-thumbs-create</a> (data.srcs -&gt; data.newAssets)</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-manipulate">rehype-all-the-thumbs-manipulate</a> (data.newAssets -&gt; DOM)</li>
+<li><a href="https://github.com/ericdmoore/rehype-all-the-thumbs-obviate">rehype-all-the-thumbs-obviate</a> (data.newAssets.filter -&gt; data.newAssets)</li>
+<li><a href="https://github.com/ericdmoore/vfile-newAssets-generate">vfile-newAssets-generate</a> (data.newAssets -&gt; Side Effect Funtion to create the file)</li>
+</ul>
+<h2>License</h2>
+<p><a href="LICENSE">MIT</a> © <a href="https://im.ericdmoore.com">Eric D Moore</a></p>
+<h3>Srcs Type Preview</h3>
+<p><code>srcs</code> is a <code>ResizerConfig[]</code></p>
+<pre class="prettyprint source lang-js"><code>
+/**
+ *
+ * @typedef InboundConfig
+ * @type {object}
+ * @property {string | StringThunk } [select] - a CSS selector string for how to find the DOM nodes that have the data of interest.
+ * @property {string} [sourcePrefix] -  the path string that provides the required folder context to load a src file from the fs
+ * @property {string} [destBasePath] -  the path string that provides folder context for where to put the string 
+ * @property {number[]} [widths] - breakpoints + 1 for larger than last break
+ * @property {number[]} [breaks] - where are the image breakpoints - defined by max applicable 769, 1088, 1280
+ * @property {FormatOptions} [types] - jpg:{} | webp:{} | heif:{}
+ * @property {number} [hashlen] - default = 8;
+ * @property {string} [addclassnames] -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ * @property {string} [prefix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ * @property {string} [suffix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ */
+
+</code></pre>
+<h3>Resizer Config</h3>
+<pre class="prettyprint source lang-js"><code>/**
+ *
+ * @typedef ResizerConfig
+ * @type {object}
+ * @property {string} selectedBy - the CSS selctor used to get to this node
+ * @property {string} sourcePrefix - the path string that provides the required folder context to load a src file from the fs
+ * @property {string} destBasePath - the path string that provides folder context for where to put the string 
+ * @property {number[]} widths - breakpoints + 1 for larger than last break
+ * @property {number[]} breaks - where are the image breakpoints - defined by max applicable 769, 1088, 1280
+ * @property {FormatOptions} types - jpg:{} | webp:{} | heif:{}
+ * @property {number} hashlen - default = 8;
+ * @property {string} addclassnames -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ * @property {string} prefix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ * @property {string} suffix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
+ */
+
+/**
+ * @typedef StringThunk
+ * @type {Function}
+ * @returns {string}
+ */
+
+/**
+ * @typedef FormatOption
+ * @type { (JPEG | WEBP | HEIF ) }
+ */
+
+/**
+ * @typedef FormatOptions
+ * @type { FormatOption[] }
+ */
+
+/**
+ * @typedef JPEG
+ * @type {Object}
+ * @property {JPEGopts} jpg - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef JPEGopts
+ * @type {Object}
+ * @property {number} [quality] - integer 1-100 (optional, default 80)
+ * @property {boolean} [progresive] - use progressive (interlace) scan (optional, default true)
+ */
+
+/**
+ * @typedef WEBP
+ * @type {Object}
+ * @property {WEBPopts} webp - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef WEBPopts
+ * @type {Object}
+ * @property {number} [quality] - integer 1-100 (optional, default 80)
+ * @property {boolean} [lossless] - use lossless compression mode (optional, default false)
+ */
+
+/**
+ * @typedef HEIF
+ * @type {Object}
+ * @property {HEIFopts} heif - breakpoints + 1 for larger than last break
+ */
+
+/**
+ * @typedef HEIFopts
+ * @type {Object}
+ * @property {number} [quality] - quality, integer 1-100 (optional, default 80)
+ * @property {HEIFoptsCompression | false} [compression] - compression format: hevc, avc, jpeg, av1 (optional, default 'hevc')
+ * @property {boolean} [lossless] - use lossless compression (optional, default false)
+ */
+
+/**
+ * @typedef HEIFoptsCompression
+ * @type {'hevc' | 'avc' | 'jpeg' | 'av1' }
+ */
+
+</code></pre>
+<!-- Definitions -->
+<!-- [downloads] -->
+<!-- [downloads-badge] --></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Mon Nov 02 2020 16:35:49 GMT-0600 (Central Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
