@@ -7,9 +7,7 @@
 [![Size][size-badge]][size]
 [![Issues][issues-badge]][issues]
 [![License][license-badge]][license]
-[![Quality Score][quality-badge]][quality]
-
-
+[![Quality Score out of 10][quality-badge]][quality]
 <!-- [![Downloads][downloads-badge]][downloads] -->
 <!-- [![Sponsors][sponsors-badge]][collective] -->
 <!-- [![Backers][backers-badge]][collective] -->
@@ -27,9 +25,11 @@ or
 
 ## Overview
 
-So tried the ["easy button"](https://github.com/ericdmoore/rehype-all-the-thumbs), and needed more flexibilty. So down the rabbit trail we go, but now you can compose your own pipeline together tailor made to your needs, 🤘🏼 Rock On.
+So you tried the ["easy button"](https://github.com/ericdmoore/rehype-all-the-thumbs), and needed more flexibilty? So down the rabbit trail we go. The good news is now you can compose your own pipeline together that is tailor made to your needs! 
 
-If that sketch does not sound like the adventure you are on, you might want to try the "easy button" first. Head to the parent project [`rehype-all-the-thumbs` ](https://github.com/ericdmoore/rehype-all-the-thumbs)
+🤘🏼 Rock On.
+
+If that sketch does not sound like the adventure you are on, you might want to try the ["easy button"](https://github.com/ericdmoore/rehype-all-the-thumbs) first. Head to the parent project (aka: easy button) [`rehype-all-the-thumbs` ](https://github.com/ericdmoore/rehype-all-the-thumbs)
 
 **_Configuration_**:
 - a SelectAll string
@@ -61,7 +61,6 @@ unified()
     // where the length is based on img srcs found in picture tags 
     // which is the default CSS selector
     // the other attributes are populated based on the defaults, and all are configurable
-    
     // vfile has new sidecar data called srcs - an array of declarative instructions from which other plugins can make thumbnails.
     console.log( vfile.srcs )
 })
