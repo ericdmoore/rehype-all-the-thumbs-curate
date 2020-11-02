@@ -2,6 +2,7 @@
 > rehype-👍🏿👍🏼👍🏽👍🏻👍🏾 (Selecting Inputs)
 
 [![Build][build-badge]][build]
+[![Tests][tests-badge]][tests]
 [![Coverage][coverage-badge]][coverage]
 [![Size][size-badge]][size]
 <!-- [![Downloads][downloads-badge]][downloads] -->
@@ -217,11 +218,13 @@ unified()
 
 [author]: https://im.ericdmoore.com
 
-[build]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3A%22Build+%26+Tests%22
-[build-badge]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Build%20&%20Tests/badge.svg
 [coverage]: https://codecov.io/gh/ericdmoore/rehype-all-the-thumbs-curate
 [coverage-badge]: https://img.shields.io/codecov/c/gh/ericdmoore/rehype-all-the-thumbs-curate
 [size]:https://bundlephobia.com/result?p=rehype-all-the-thumbs-curate
 [size-badge]:https://img.shields.io/bundlephobia/minzip/rehype-all-the-thumbs-curate?style=flat-square
+[build]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3ATests
+[build-badge]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Build/badge.svg
+[tests]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/actions?query=workflow%3ATests
+[tests-badge]:https://github.com/ericdmoore/rehype-all-the-thumbs-curate/workflows/Tests/badge.svg
 <!-- [downloads] -->
 <!-- [downloads-badge] -->
