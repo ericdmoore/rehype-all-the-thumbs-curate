@@ -36,14 +36,14 @@ If that sketch does not sound like the adventure you are on, you might want to t
 
 **_Configuration_**:
 - a [CSS Selector string](https://github.com/syntax-tree/hast-util-select)
-- a default [ResizerConfig](#resizer_config)
+- a default [ResizerConfig](#resizer-config)
 
 **_Input_**:
 - a [HAST](https://github.com/syntax-tree/hast) tree
 
 **_Output_**:
 - unchanged [HAST](https://github.com/syntax-tree/hast) tree
-- vfile with added `srcs` key added to the object
+- [vfile](https://github.com/vfile/vfile) with added `srcs` key added to the object
 
 ## Usage
 
