@@ -10,8 +10,9 @@
   "scripts": {
     "test": "nyc tape tests/**/*.test.js | tap-nyc",
     "test:NYC": "nyc npm test | tap-nyc",
-    "docs": "gulp doc && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
-    "_docs": "jsdoc src/index.js -c .jsdoc.json && open docs/rehype-all-the-thumbs-curate/0.1.0/index.html",
+    "docs": "gulp doc && npm run openDocs",
+    "_docs": "jsdoc src/index.js -c .jsdoc.json",
+    "openDocs":"open file:///Users/ericmoore/Web/rehype-all-the-thumbs-curate/docs/rehype-all-the-thumbs-curate/",
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
     "lint": "eslint src/index.js",
     "build": "mkdir -p dist/umd && npm run build:umd && npm run build:min",

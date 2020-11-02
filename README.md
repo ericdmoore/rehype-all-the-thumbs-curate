@@ -109,7 +109,7 @@ unified()
 
 [MIT][license] © [Eric D Moore][author]
 
-## Srcs Type Preview
+### Srcs Type Preview
 
 `srcs` is a `ResizerConfig[]`
 
