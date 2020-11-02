@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Use Node.js ${{ matrix.node-version }}
@@ -21,7 +21,7 @@ jobs:
     - run: npm ci
     - run: npm run lint
     - run: npm run build
-    
+
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -34,11 +34,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: CheckOut Latest
       uses: actions/checkout@v2
-    - run: npm ci
+    - name: Clean Install
+      run: npm ci
     - name: Run Test + Send Coverage
-      env: 
+      env:
         CODECOV_TOKEN : ${{ secrets.CODECOV_TOKEN }}
       run: |
-        npm run test:NYC 
+        npm run test:NYC
         npx nyc report --reporter=text-lcov | npx codecov -t ${{ secrets.CODECOV_TOKEN }} --pipe
 
