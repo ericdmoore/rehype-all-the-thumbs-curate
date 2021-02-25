@@ -82,7 +82,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             c = c.endsWith('/') ? c.slice(0, -1) : c;
             return c;
         });
-        var nodDotDotnoSlashes = withDotsButNoSlashes.reduce(function (p, c) {
+        var noDotDotnoSlashes = withDotsButNoSlashes.reduce(function (p, c) {
             if (c === '' || c === ' ') {
                 return p;
             }
@@ -93,7 +93,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                 return __spreadArray(__spreadArray([], p), [c]);
             }
         }, []);
-        return nodDotDotnoSlashes.join('/');
+        return noDotDotnoSlashes.join('/');
     };
     exports.localResolve = localResolve;
     var trimmedHash = function (n) { return function (b) { return function () { return crypto_1.createHash('sha256').update(b).digest('hex').slice(0, n); }; }; };

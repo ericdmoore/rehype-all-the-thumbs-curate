@@ -16,9 +16,9 @@
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
     "lint": "eslint src/index.js",
     "build": "tsc",
-    "esbuild": "mkdir -p dist/umd && npm run build:umd && npm run build:min",
-    "esbuild:umd": "esbuild src/index.ts --bundle > dist/umd/index.js",
-    "esbuild:min": "esbuild src/index.ts --bundle --minify > dist/index.min.js"
+    "esbuild": "mkdir -p dist/umd && npm run esbuild:umd && npm run esbuild:min",
+    "esbuild:umd": "esbuild src/index.ts --bundle --platform=node > dist/umd/index.js",
+    "esbuild:min": "esbuild src/index.ts --bundle --platform=node --minify > dist/index.min.js"
   },
   "dependencies": {
     "hast-util-select": "^4.0.0"
@@ -55,7 +55,7 @@
     "tape": "^5.0.1",
     "tape-promise": "^4.0.0",
     "to-vfile": "^6.1.0",
-    "typedoc": "^0.19.2",
+    "typedoc": "^0.20.28",
     "typescript": "^4.2.2",
     "unified": "^9.2.0",
     "vfile": "^4.2.0",

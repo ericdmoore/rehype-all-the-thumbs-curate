@@ -222,6 +222,7 @@ export const attacher = (config?:InputConfig)=>{
           const accSimpleConfig = [] as SimpleConfig[]
           Object.entries(s.types).forEach(([format, opts])=>{
             s.widths.forEach(width=>{
+
               const ext = path.extname(s.src).slice(1) // no dot prefix
               const fileName = path.basename(s.src, `.${ext}`)
 
