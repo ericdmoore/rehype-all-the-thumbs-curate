@@ -1,293 +1,283 @@
-/** 
+/**
  * @title rehype-all-the-thumbs-curate
  * @author Eric Moore
  * @summary Select DOM nodes that have images availble for thumbnailing
- * @description Pluck out Images, and tag the file with instructions for 
+ * @description Pluck out Images, and tag the file with instructions for
  * other thumbnailing plugins to use.
- * 
- * Input
- *   css selctor string + Instruction Information for thumbnailing images
- * Output
- *   an unchanged tree (aka: vfile.contents)
  * @see https://unifiedjs.com/explore/package/hast-util-select/#support
- */
-
-const { isArray } = Array
-const { selectAll } = require('hast-util-select')
-
-/**
- * Merge
- * @private
- * @param {Object.<string, Function>} paths - list of depth:1 property strings that 
- * @param {object} fallback - a fallback back object that has the property (hopefully)
- * @param {object} obj - the target object that might have the path of interest
- * @return {object}
- */
-const merge = (paths, fallback, obj) =>
-    Object.entries(paths)
-        .reduce((p,[prop, prepFn])=>
-            prop in obj 
-                ? prepFn(p, obj[prop])
-                : prop in fallback 
-                    ? {...p, [prop]: fallback[prop]}
-                    : p
-        ,{})
-
-
-/** 
- * Map Builder: Parse String And Swap Path
- * @private
- * @description A builder function returning a key to ƒ.transform map.
- * The 'look-up-key'º is mapped to a merge function.
- * The ƒ.merge returns a new merged object, 
- * where the 'look-up-key'º is replaced with the writePath during merge, and the val is parsed
- * @param {string} readPath - keys to look for in an object
- * @param {string} writePath - if you find the key, run the function on the whole object + the value,
- * and add this reaplcer key into the closure that generates the new result.
- * @returns {Object.<string, mergeFunc_ValToObj>}
-*/
-const parseStringsAndSwapPath = (readPath, writePath)=>({ [readPath]: (a,s)=>({...a, [writePath]:JSON.parse(s)}) })
-
-/**
- * Map Builder: Swap Path
- * @private
- * @description A builder function returning a key to ƒ.transform map.
- * The 'look-up-key'º (aka: readPath) is mapped to a merge function.
- * The ƒ.merge function is given an accumulating merge object, and a value from one of 2 target objects depending on if its found.
- * The ƒ.merge returns a merged object, and all it does it replce the look-up-keyº with the writePath
- * and the val stays unchanged.
- * @param {string} readPath - keys to look for in an object
- * @param {string} writePath - if the key is found, the merge fucntion replaces
- * the lookup-key with a writePath key which is baked into the
- * @returns {Object.<string, mergeFunc_stringVal>}
- * @example
- * const mergeMeIn = noChange('lookForThis', 'butEventuallyMakeItThis')
- * console.log(mergeMeIn) // { lookForThis: (all, val) => ({...all, butEventuallyMakeItThis: val}) }
- */
-const noChangeJustSwapPath = (readPath, writePath)=>({ [readPath]: (a,s)=>({...a, [writePath]:s}) })
-
-/**
- * Map Builder: Indetity
- * @private
- * @description A builder function returning a key to ƒ.transform map.
- * The look-up-key maps to a ƒ.merge.
- * The ƒ.merge (inputs: (accum obj, val)) returns a merged object where the 'look-up-key'º maps to the unchanged val
- * @param {string} spath - look-up-key string path
- * @returns {Object.<string, mergeFunc_stringVal>}
- * @example
- * const mergeMeIn = noChange('findTheKey')
- * console.log(mergeMeIn) // { findTheKey: (all, val) => ({...all, findTheKey: val}) }
- */
-const noChange = spath => ({ [spath]: (a,s)=>({...a, [spath]:s}) })
-
-/**
- * Map Builder: Parse The Val
- * @private
- * @description  A builder function returning a key to ƒ.transform map.
- * The returned object is merged into a configuration object used for merging objects.
- * The `lookup-key` maps to a ƒ.merge.
- * @param {string} spath - string path
- * @returns {Object.<strng, mergeFunc_ValToObj>}
- */
-const parseIfString = (spath)=>({[spath]: (a,maybeS) => typeof maybeS ==='string' ? {...a, [spath]:JSON.parse(maybeS)} : {...a, [spath]:maybeS }})
-
-const HASTpaths = {
-    ...noChange('selectedBy'),
-    ...noChangeJustSwapPath('dataSourceprefix','sourcePrefix'),
-    ...noChangeJustSwapPath('dataDestbasepath','destBasePath'),
-    ...noChangeJustSwapPath('dataPrefix','prefix'),
-    ...noChangeJustSwapPath('dataSuffix','suffix'),
-    ...parseStringsAndSwapPath('dataHashlen','hashlen'),
-    ...parseStringsAndSwapPath('dataClean','clean'),
-    ...parseStringsAndSwapPath('dataWidths','widths'),
-    ...parseStringsAndSwapPath('dataBreaks','breaks'),
-    dataAddclassnames: (a,sa)=>({...a, addclassnames: sa.split(' ')}),
-    dataTypes: (a,s)=>({...a, types: s.split(',').reduce((p,c)=>({...p,[c]:{}}),{}) })
-}
-const NORMpaths = {
-    ...noChange('selectedBy'),
-    ...noChange('sourcePrefix'),
-    ...noChange('destBasePath'),
-    ...noChange('prefix'),
-    ...noChange('suffix'),
-    ...noChange('hashlen'),
-    ...noChange('clean'),
-    ...noChange('addclassnames'),
-    ...parseIfString('widths'),
-    ...parseIfString('breaks'),
-    ...parseIfString('types'),
-}
-
-const mergeNode =  (fallback, ob) => merge(HASTpaths, fallback, ob.properties)
-const mergeConfig = (fallback, ob = {}) => merge(NORMpaths, fallback, ob)
-
-/**
- * @exports rehype-all-the-thumbs-curate
- * @description the `rehype-all-the-thumbs-curate` plugin adds a transformer to the pipeline.
- * @param { InboundConfig } [config] - Instructions for a Resizer Algorithm to understand the types of thumbnails desired.
- */
-const attacher = (config)=>{
-    const select = !config || !config.select 
-        ? 'picture[thumbnails="true"]>img' 
-        : typeof config.select ==='function' 
-            ? config.select() 
-            : config.select
-
-    const defaults = {
-        selectedBy: select,
-        sourcePrefix:'',
-        destBasePath:'',
-        hashlen: 8,
-        clean: true,
-        types: {webp:{}, jpg:{}}, // where the empty object implies use the default for the format
-        breaks: [640, 980, 1020],
-        widths: [100, 250, 450, 600],
-        addclassnames: ['all-thumbed'],
-        prefix: 'optim/',
-        suffix: '-{{width}}w-{{hash}}.{{ext}}' 
-    }
-    // fallback to inlined defaults
-    /** @const ResizerConfig */
-    const cfg = mergeConfig(defaults, config)
-    
-    // console.log({select})
-    // console.log(0, {cfg})
-
-    // transformer
-    return (tree, vfile, next)=>{
-        // console.log(1,  JSON.stringify({ vfile1: vfile }, null, 2))
-        // console.log(2,  JSON.stringify({ cfg }, null, 2))
-        
-        const selected = selectAll(select, tree)
-        // console.log( JSON.stringify({ selected }, null, 2))
-        
-        const srcs = selected
-            .map(node => ({ node, src: node.properties.src }))
-            .map(({ src, node }) => ({ 
-                ...mergeConfig(cfg, mergeNode(cfg, node)), 
-                src
-            })
-            )
-        // console.log(3, JSON.stringify({ srcs }, null, 2))
-        const allSrcs = isArray(vfile.srcs) ? srcs.concat(vfile.srcs) : srcs
-        vfile.srcs = allSrcs
-        next(null, tree, vfile)
-    }
-}
-
-exports = attacher
-module.exports = attacher
-
-// #region interfaces
-
-/**
  *
- * @typedef InboundConfig
- * @type {object}
- * @property {string | StringThunk } [select] - a CSS selector string for how to find the DOM nodes that have the data of interest.
- * @property {string} [sourcePrefix] -  the path string that provides the required folder context to load a src file from the fs
- * @property {string} [destBasePath] -  the path string that provides folder context for where to put the string 
- * @property {number[]} [widths] - breakpoints + 1 for larger than last break
- * @property {number[]} [breaks] - where are the image breakpoints - defined by max applicable 769, 1088, 1280
- * @property {FormatOptions} [types] - jpg:{} | webp:{} | heif:{}
- * @property {number} [hashlen] - default = 8;
- * @property {string} [addclassnames] -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
- * @property {string} [prefix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
- * @property {string} [suffix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
- */
-
-/**
+ * # Inpput/Output
  *
- * @typedef ResizerConfig
- * @type {object}
- * @property {string} selectedBy - the CSS selctor used to get to this node
- * @property {string} sourcePrefix - the path string that provides the required folder context to load a src file from the fs
- * @property {string} destBasePath - the path string that provides folder context for where to put the string 
- * @property {number[]} widths - breakpoints + 1 for larger than last break
- * @property {number[]} breaks - where are the image breakpoints - defined by max applicable 769, 1088, 1280
- * @property {FormatOptions} types - jpg:{} | webp:{} | heif:{}
- * @property {number} hashlen - default = 8;
- * @property {string} addclassnames -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
- * @property {string} prefix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
- * @property {string} suffix - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]"
+ * ## Implied Input (Required):
+ *
+ *   + HTML file with a DOM tree (can be decorate with instructions)
+ *
+ * ## Input Config (Optional)
+ *
+ *   - css selctor string
+ *   - instructions for thumbnailing images
+ *
+ * ## Config Preference
+ *
+ *   HTML > Options
+ *
+ * ## Output
+ *
+ * -an unchanged tree (aka: vfile.contents)
  */
-
-/**
- * @typedef StringThunk
- * @type {Function}
- * @returns {string}
- */
-
-/**
- * @typedef FormatOption
- * @type { (JPEG | WEBP | HEIF ) }
- */
-
-/**
- * @typedef FormatOptions
- * @type { FormatOption[] }
- */
-
-/**
- * @typedef JPEG
- * @type {Object}
- * @property {JPEGopts} jpg - breakpoints + 1 for larger than last break
- */
-
-/**
- * @typedef JPEGopts
- * @type {Object}
- * @property {number} [quality] - integer 1-100 (optional, default 80)
- * @property {boolean} [progresive] - use progressive (interlace) scan (optional, default true)
- */
-
-/**
- * @typedef WEBP
- * @type {Object}
- * @property {WEBPopts} webp - breakpoints + 1 for larger than last break
- */
-
-/**
- * @typedef WEBPopts
- * @type {Object}
- * @property {number} [quality] - integer 1-100 (optional, default 80)
- * @property {boolean} [lossless] - use lossless compression mode (optional, default false)
- */
-
-/**
- * @typedef HEIF
- * @type {Object}
- * @property {HEIFopts} heif - breakpoints + 1 for larger than last break
- */
-
-/**
- * @typedef HEIFopts
- * @type {Object}
- * @property {number} [quality] - quality, integer 1-100 (optional, default 80)
- * @property {HEIFoptsCompression | false} [compression] - compression format: hevc, avc, jpeg, av1 (optional, default 'hevc')
- * @property {boolean} [lossless] - use lossless compression (optional, default false)
- */
-
-/**
- * @typedef HEIFoptsCompression
- * @type {'hevc' | 'avc' | 'jpeg' | 'av1' }
- */
-
-/**
- * @typedef mergeFunc_ValToObj
- * @type {Function}
- * @param {object} all - the whole object that is being merged into 
- * @param {string} val - the value to parsed and turned into a js object
- * @returns {Object.<string,object>}
- */
-
-/**
- * @typedef mergeFunc_stringVal
- * @type {Function}
- * @param {object} all - the whole object that is being merged into 
- * @param {string} val - the value to parsed and turned into a js object
- * @returns {Object.<string,string>}
- */
-
-
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "path", "hast-util-select", "crypto"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.attacher = exports.trimmedHash = exports.localResolve = void 0;
+    var path_1 = __importDefault(require("path"));
+    var hast_util_select_1 = require("hast-util-select");
+    var crypto_1 = require("crypto");
+    var isArray = Array.isArray;
+    // import Mustache from 'mustache'
+    // const makePrettyPrinter = (indent=2) => (...a:any) => a.length === 1
+    //  ? console.log(JSON.stringify( a[0], null, indent))
+    //  : console.log(...a.slice(0,-1), JSON.stringify(a.slice(-1)[0], null, indent))
+    // const prettyPrint = makePrettyPrinter()
+    /**
+     * Resolve
+     * @summary Merge path segments together
+     * @description Take in path segments,
+     * intelligibly  merge them together to form one path.
+     * @todo the up path
+     */
+    var localResolve = function () {
+        var paths = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            paths[_i] = arguments[_i];
+        }
+        var withDotsButNoSlashes = paths.map(function (c, i, a) {
+            c = c.startsWith('/') ? c.slice(1) : c;
+            c = c.endsWith('/') ? c.slice(0, -1) : c;
+            return c;
+        });
+        var nodDotDotnoSlashes = withDotsButNoSlashes.reduce(function (p, c) {
+            if (c === '' || c === ' ') {
+                return p;
+            }
+            if (c.startsWith('..')) {
+                return exports.localResolve.apply(void 0, __spreadArray(__spreadArray([], p.slice(0, -1)), [c.slice(2)])).split('/');
+            }
+            else {
+                return __spreadArray(__spreadArray([], p), [c]);
+            }
+        }, []);
+        return nodDotDotnoSlashes.join('/');
+    };
+    exports.localResolve = localResolve;
+    var trimmedHash = function (n) { return function (b) { return function () { return crypto_1.createHash('sha256').update(b).digest('hex').slice(0, n); }; }; };
+    exports.trimmedHash = trimmedHash;
+    /**
+     * Merge
+     * @private
+     */
+    var merge = function (paths, fallback, obj) {
+        return Object.entries(paths)
+            .reduce(function (acc, _a) {
+            var _b;
+            var prop = _a[0], prepFn = _a[1];
+            return prop in obj
+                ? prepFn(acc, obj[prop])
+                : prop in fallback
+                    ? __assign(__assign({}, acc), (_b = {}, _b[prop] = fallback[prop], _b)) : acc;
+        }, {});
+    };
+    /**
+     * Map Builder: Parse String And Swap Path
+     * @private
+     * @description A builder function returning a key to ƒ.transform map.
+     * The 'look-up-key'º is mapped to a merge function.
+     * The ƒ.merge returns a new merged object,
+     * where the 'look-up-key'º is replaced with the writePath during merge, and the val is parsed
+    */
+    var parseStringsAndSwapPath = function (readPath, writePath) {
+        var _a;
+        return (_a = {}, _a[readPath] = function (a, s) {
+            var _a;
+            return (__assign(__assign({}, a), (_a = {}, _a[writePath] = JSON.parse(s), _a)));
+        }, _a);
+    };
+    /**
+     * Map Builder: Swap Path
+     * @private
+     * @description A builder function returning a key to ƒ.transform map.
+     * The 'look-up-key'º (aka: readPath) is mapped to a merge function.
+     * The ƒ.merge function is given an accumulating merge object, and a value from one of 2 target objects depending on if its found.
+     * The ƒ.merge returns a merged object, and all it does it replce the look-up-keyº with the writePath
+     * and the val stays unchanged
+     * @example
+     * const mergeMeIn = noChange('lookForThis', 'butEventuallyMakeItThis')
+     * console.log(mergeMeIn) // { lookForThis: (all, val) => ({...all, butEventuallyMakeItThis: val}) }
+     */
+    var noChangeJustSwapPath = function (readPath, writePath) {
+        var _a;
+        return (_a = {}, _a[readPath] = function (a, s) {
+            var _a;
+            return (__assign(__assign({}, a), (_a = {}, _a[writePath] = s, _a)));
+        }, _a);
+    };
+    /**
+     * Map Builder: Indetity
+     * @private
+     * @description A builder function returning a key to ƒ.transform map.
+     * The look-up-key maps to a ƒ.merge.
+     * The ƒ.merge (inputs: (accum obj, val)) returns a merged object where the 'look-up-key'º maps to the unchanged val
+     */
+    var noChange = function (spath) {
+        var _a;
+        return (_a = {}, _a[spath] = function (a, s) {
+            var _a;
+            return (__assign(__assign({}, a), (_a = {}, _a[spath] = s, _a)));
+        }, _a);
+    };
+    /**
+     * Map Builder: Parse The Val
+     * @private
+     * @description  A builder function returning a key to ƒ.transform map.
+     * The returned object is merged into a configuration object used for merging objects.
+     * The `lookup-key` maps to a ƒ.merge.
+     */
+    var parseIfString = function (spath) {
+        var _a;
+        return (_a = {},
+            _a[spath] = function (a, maybeS) {
+                var _a, _b;
+                return typeof maybeS === 'string'
+                    ? __assign(__assign({}, a), (_a = {}, _a[spath] = JSON.parse(maybeS), _a))
+                    : __assign(__assign({}, a), (_b = {}, _b[spath] = maybeS, _b));
+            },
+            _a);
+    };
+    var HASTpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChangeJustSwapPath('dataSourceprefix', 'sourcePrefix')), noChangeJustSwapPath('dataDestbasepath', 'destBasePath')), noChangeJustSwapPath('dataPrefix', 'prefix')), noChangeJustSwapPath('dataSuffix', 'suffix')), parseStringsAndSwapPath('dataHashlen', 'hashlen')), parseStringsAndSwapPath('dataClean', 'clean')), parseStringsAndSwapPath('dataWidths', 'widths')), parseStringsAndSwapPath('dataBreaks', 'breaks')), { dataAddclassnames: function (a, sa) { return (__assign(__assign({}, a), { addclassnames: sa.split(' ') })); } }), { dataTypes: function (a, s) { return (__assign(__assign({}, a), { types: s.split(',').reduce(function (p, c) {
+                var _a;
+                return (__assign(__assign({}, p), (_a = {}, _a[c] = {}, _a)));
+            }, {}) })); } });
+    var NORMpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChange('sourcePrefix')), noChange('destBasePath')), noChange('prefix')), noChange('suffix')), noChange('hashlen')), noChange('clean')), noChange('addclassnames')), parseIfString('widths')), parseIfString('breaks')), parseIfString('types'));
+    var mergeNode = function (fallback, ob) { return merge(HASTpaths, fallback, ob.properties); };
+    var mergeConfig = function (fallback, ob) {
+        if (ob === void 0) { ob = {}; }
+        return merge(NORMpaths, fallback, ob);
+    };
+    /**
+     * @exports rehype-all-the-thumbs-curate
+     * @description the `rehype-all-the-thumbs-curate` plugin adds a transformer to the pipeline.
+     * @param { InboundConfig } [config] - Instructions for a Resizer Algorithm to understand the types of thumbnails desired.
+     */
+    var attacher = function (config) {
+        var select = !config || !config.select
+            ? 'picture[thumbnails="true"]>img'
+            : typeof config.select === 'function'
+                ? config.select()
+                : config.select;
+        var defaults = {
+            selectedBy: select,
+            sourcePrefix: '/',
+            destBasePath: '/',
+            hashlen: 8,
+            clean: true,
+            types: { webp: {}, jpg: {} },
+            breaks: [640, 980, 1020],
+            widths: [100, 250, 450, 600],
+            addclassnames: ['all-thumbed'],
+            prefix: 'optim/',
+            suffix: '-{{width}}w-{{hash}}.{{ext}}'
+        };
+        var cfg = mergeConfig(defaults, config);
+        // console.log({select})
+        // console.log(0, {cfg})
+        // transformer
+        return function (tree, vfile, next) {
+            // console.log(1,  JSON.stringify({ vfile1: vfile }, null, 2))
+            // console.log(2,  JSON.stringify({ cfg }, null, 2))
+            var selected = hast_util_select_1.selectAll(select, tree);
+            // console.log( JSON.stringify({ selected }, null, 2))
+            var srcsCompact = selected
+                .map(function (node) { return ({ node: node, src: node.properties.src }); })
+                .map(function (_a) {
+                var src = _a.src, node = _a.node;
+                return (__assign(__assign({}, mergeConfig(cfg, mergeNode(cfg, node))), { src: src }));
+            });
+            // console.log('plugin:curate--', {srcsCompact})
+            var srcs = srcsCompact.reduce(function (p, _s) {
+                var s = _s;
+                var partOfSet = {
+                    breaks: s.breaks,
+                    types: s.types,
+                    widths: s.widths,
+                };
+                var accSimpleConfig = [];
+                Object.entries(s.types).forEach(function (_a) {
+                    var format = _a[0], opts = _a[1];
+                    s.widths.forEach(function (width) {
+                        var _a;
+                        var ext = path_1.default.extname(s.src).slice(1); // no dot prefix
+                        var fileName = path_1.default.basename(s.src, "." + ext);
+                        accSimpleConfig.push({
+                            selectedBy: s.selectedBy,
+                            addclassnames: s.addclassnames,
+                            input: {
+                                ext: ext,
+                                fileName: fileName,
+                                pathPrefix: s.sourcePrefix
+                            },
+                            output: {
+                                width: width,
+                                format: (_a = {}, _a[format] = opts, _a),
+                                hashlen: s.hashlen,
+                                hash: exports.trimmedHash(s.hashlen)
+                            },
+                            getReadPath: function (i) { return !i
+                                ? exports.localResolve(s.sourcePrefix, fileName + "." + ext)
+                                : i.render(path_1.default.resolve(s.sourcePrefix, s.src), i.data); },
+                            getWritePath: function (i) { return !i
+                                ? exports.localResolve(s.destBasePath, "" + s.prefix + fileName + s.suffix)
+                                : i.render(path_1.default.resolve(s.destBasePath, "" + s.prefix + fileName + s.suffix), i.data); },
+                            partOfSet: partOfSet
+                        });
+                    });
+                });
+                return __spreadArray(__spreadArray([], p), accSimpleConfig);
+            }, []);
+            // prettyPrint(0, 'plugin:curate--', {srcs})
+            var vfile_srcs = isArray(vfile.srcs) ? __spreadArray(__spreadArray([], vfile.srcs), srcs) : srcs;
+            // prettyPrint(1, 'plugin:curate--', {vfile})
+            vfile.srcs = vfile_srcs;
+            // return vfile
+            next(null, tree, vfile);
+        };
+    };
+    exports.attacher = attacher;
+    exports.default = exports.attacher;
+});
 // #endregion interfaces

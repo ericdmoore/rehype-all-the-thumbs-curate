@@ -8,6 +8,7 @@ module.exports = {
         'node': true
     },
     'rules': {
+        'arrow-spacing':['error', { 'before': true, 'after': true }],
         'indent': [ 'error', 4],
         'linebreak-style': ['error','unix'],
         'quotes': ['error', 'single'],

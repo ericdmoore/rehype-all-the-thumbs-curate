@@ -16,7 +16,7 @@
 
 Supporting [`rehype-all-the-thumbs`](https://github.com/ericdmoore/rehype-all-the-thumbs) by finding the elements for processing via [CSS Selector Strings](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
 
-![Rehype-All-The-Thumbs-Curate](pics/title.svg)
+![Rehype-All-The-Thumbs-Curate](pics/curate.svg)
 
 ## Install
 
@@ -106,7 +106,7 @@ unified()
 
 ## Pairs Well With:
 
-- [rehype-all-the-thumbs](https://github.com/ericdmoore/rehype-all-the-thumbs) ...like putting on velcro shoes
+- [rehype-all-the-thumbs](https://github.com/ericdmoore/rehype-all-the-thumbs) ...making thumbnails has never been so easy. Easy, like putting on velcro shoes, easy.
 - [rehype-all-the-thumbs-curate](https://github.com/ericdmoore/rehype-all-the-thumbs-curate) (DOM -> data.srcs)
 - [rehype-all-the-thumbs-create](https://github.com/ericdmoore/rehype-all-the-thumbs-create) (data.srcs -> data.newAssets)
 - [rehype-all-the-thumbs-manipulate](https://github.com/ericdmoore/rehype-all-the-thumbs-manipulate) (data.newAssets -> DOM)
@@ -243,6 +243,3 @@ unified()
 [issues-badge]:https://img.shields.io/github/issues/ericdmoore/rehype-all-the-thumbs-curate
 [quality]:https://scrutinizer-ci.com/g/ericdmoore/rehype-all-the-thumbs-curate/
 [quality-badge]:https://img.shields.io/scrutinizer/quality/g/ericdmoore/rehype-all-the-thumbs-curate
-
-<!-- [downloads] -->
-<!-- [downloads-badge] -->
