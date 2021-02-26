@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for rehype-all-the-thumbs-curate">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,11 +50,6 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
 			<h1>rehype-all-the-thumbs-curate</h1>
 		</div>
 	</div>
@@ -116,53 +110,56 @@
 				<a href="#simple" id="simple" style="color: inherit; text-decoration: none;">
 					<h3>Simple</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> unified = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;unified&#x27;</span>)
-<span class="hljs-keyword">const</span> parse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-parse&#x27;</span>)
-<span class="hljs-keyword">const</span> curate = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-all-the-thumbs-curate&#x27;</span>)
-<span class="hljs-keyword">const</span> stringer = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-stringify&#x27;</span>)
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">unified</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;unified&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">parse</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-parse&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">curate</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-all-the-thumbs-curate&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">stringer</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-stringify&#039;</span><span style="color: #000000">)</span>
 
-unified()
-.use(parse)
-.use(curate)
-.use(stringer)
-.process(vf, <span class="hljs-function">(<span class="hljs-params">err, vfile</span>)=&gt;</span>{
-    <span class="hljs-comment">// srcs is an array,</span>
-    <span class="hljs-comment">// where the length is based on img srcs found in picture tags </span>
-    <span class="hljs-comment">// which is the default CSS selector</span>
-    <span class="hljs-comment">// the other attributes are populated based on the defaults, and all are configurable</span>
-    <span class="hljs-comment">// vfile has new sidecar data called srcs - an array of declarative instructions from which other plugins can make thumbnails.</span>
-    <span class="hljs-built_in">console</span>.log( vfile.srcs )
-})</code></pre>
+<span style="color: #795E26">unified</span><span style="color: #000000">()</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">parse</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">curate</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">stringer</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">process</span><span style="color: #000000">(</span><span style="color: #001080">vf</span><span style="color: #000000">, (</span><span style="color: #001080">err</span><span style="color: #000000">, </span><span style="color: #001080">vfile</span><span style="color: #000000">)</span><span style="color: #0000FF">=&gt;</span><span style="color: #000000">{</span>
+<span style="color: #000000">    </span><span style="color: #008000">// srcs is an array,</span>
+<span style="color: #000000">    </span><span style="color: #008000">// where the length is based on img srcs found in picture tags </span>
+<span style="color: #000000">    </span><span style="color: #008000">// which is the default CSS selector</span>
+<span style="color: #000000">    </span><span style="color: #008000">// the other attributes are populated based on the defaults, and all are configurable</span>
+<span style="color: #000000">    </span><span style="color: #008000">// vfile has new sidecar data called srcs - an array of declarative instructions from which other plugins can make thumbnails.</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">( </span><span style="color: #001080">vfile</span><span style="color: #000000">.</span><span style="color: #001080">srcs</span><span style="color: #000000"> )</span>
+<span style="color: #000000">})</span>
+</code></pre>
 				<a href="#basic" id="basic" style="color: inherit; text-decoration: none;">
 					<h3>Basic</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> unified = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;unified&#x27;</span>)
-<span class="hljs-keyword">const</span> parse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-parse&#x27;</span>)
-<span class="hljs-keyword">const</span> curate = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-all-the-thumbs-curate&#x27;</span>)
-<span class="hljs-keyword">const</span> stringer = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-stringify&#x27;</span>)
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">unified</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;unified&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">parse</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-parse&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">curate</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-all-the-thumbs-curate&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">stringer</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-stringify&#039;</span><span style="color: #000000">)</span>
 
-unified()
-.use(parse)
-.use(curate)
-.use(stringer)
-.process(vf, <span class="hljs-function">(<span class="hljs-params">err, vfile</span>)=&gt;</span>{
-    <span class="hljs-built_in">console</span>.log( vfile.srcs )
-})</code></pre>
+<span style="color: #795E26">unified</span><span style="color: #000000">()</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">parse</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">curate</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">stringer</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">process</span><span style="color: #000000">(</span><span style="color: #001080">vf</span><span style="color: #000000">, (</span><span style="color: #001080">err</span><span style="color: #000000">, </span><span style="color: #001080">vfile</span><span style="color: #000000">)</span><span style="color: #0000FF">=&gt;</span><span style="color: #000000">{</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">( </span><span style="color: #001080">vfile</span><span style="color: #000000">.</span><span style="color: #001080">srcs</span><span style="color: #000000"> )</span>
+<span style="color: #000000">})</span>
+</code></pre>
 				<a href="#advanced" id="advanced" style="color: inherit; text-decoration: none;">
 					<h3>Advanced</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> unified = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;unified&#x27;</span>)
-<span class="hljs-keyword">const</span> parse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-parse&#x27;</span>)
-<span class="hljs-keyword">const</span> curate = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-all-the-thumbs-curate&#x27;</span>)
-<span class="hljs-keyword">const</span> stringer = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;rehype-stringify&#x27;</span>)
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">unified</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;unified&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">parse</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-parse&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">curate</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-all-the-thumbs-curate&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">stringer</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rehype-stringify&#039;</span><span style="color: #000000">)</span>
 
-unified()
-.use(parse)
-.use(curate)
-.use(stringer)
-.process(vf, <span class="hljs-function">(<span class="hljs-params">err, vfile</span>)=&gt;</span>{
-    <span class="hljs-built_in">console</span>.log( vfile.srcs )
-})</code></pre>
+<span style="color: #795E26">unified</span><span style="color: #000000">()</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">parse</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">curate</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">stringer</span><span style="color: #000000">)</span>
+<span style="color: #000000">.</span><span style="color: #795E26">process</span><span style="color: #000000">(</span><span style="color: #001080">vf</span><span style="color: #000000">, (</span><span style="color: #001080">err</span><span style="color: #000000">, </span><span style="color: #001080">vfile</span><span style="color: #000000">)</span><span style="color: #0000FF">=&gt;</span><span style="color: #000000">{</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">( </span><span style="color: #001080">vfile</span><span style="color: #000000">.</span><span style="color: #001080">srcs</span><span style="color: #000000"> )</span>
+<span style="color: #000000">})</span>
+</code></pre>
 				<a href="#pairs-well-with" id="pairs-well-with" style="color: inherit; text-decoration: none;">
 					<h2>Pairs Well With:</h2>
 				</a>
@@ -183,101 +180,103 @@ unified()
 				</a>
 				<p><code>srcs</code> is a <code>ResizerConfig[]</code></p>
 				<pre><code class="language-js">
-<span class="hljs-comment">/**
- *
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">InboundConfig</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{string | StringThunk }</span> </span>[select] - a CSS selector string for how to find the DOM nodes that have the data of interest.
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> </span>[sourcePrefix] -  the path string that provides the required folder context to load a src file from the fs
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> </span>[destBasePath] -  the path string that provides folder context for where to put the string 
- * <span class="hljs-doctag">@property <span class="hljs-type">{number[]}</span> </span>[widths] - breakpoints + 1 for larger than last break
- * <span class="hljs-doctag">@property <span class="hljs-type">{number[]}</span> </span>[breaks] - where are the image breakpoints - defined by max applicable 769, 1088, 1280
- * <span class="hljs-doctag">@property <span class="hljs-type">{FormatOptions}</span> </span>[types] - jpg:{} | webp:{} | heif:{}
- * <span class="hljs-doctag">@property <span class="hljs-type">{number}</span> </span>[hashlen] - default = 8;
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> </span>[addclassnames] -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> </span>[prefix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> </span>[suffix] - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> *</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">InboundConfig</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string | StringThunk }</span><span style="color: #008000"> </span><span style="color: #001080">[select]</span><span style="color: #008000"> - a CSS selector string for how to find the DOM nodes that have the data of interest.</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">[sourcePrefix]</span><span style="color: #008000"> -  the path string that provides the required folder context to load a src file from the fs</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">[destBasePath]</span><span style="color: #008000"> -  the path string that provides folder context for where to put the string </span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number[]}</span><span style="color: #008000"> </span><span style="color: #001080">[widths]</span><span style="color: #008000"> - breakpoints + 1 for larger than last break</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number[]}</span><span style="color: #008000"> </span><span style="color: #001080">[breaks]</span><span style="color: #008000"> - where are the image breakpoints - defined by max applicable 769, 1088, 1280</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{FormatOptions}</span><span style="color: #008000"> </span><span style="color: #001080">[types]</span><span style="color: #008000"> - jpg:{} | webp:{} | heif:{}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number}</span><span style="color: #008000"> </span><span style="color: #001080">[hashlen]</span><span style="color: #008000"> - default = 8;</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">[addclassnames]</span><span style="color: #008000"> -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">[prefix]</span><span style="color: #008000"> - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">[suffix]</span><span style="color: #008000"> - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;</span>
+<span style="color: #008000"> */</span>
+
 </code></pre>
 				<a href="#resizer-config" id="resizer-config" style="color: inherit; text-decoration: none;">
 					<h3>Resizer Config</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-comment">/**
- *
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">ResizerConfig</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> <span class="hljs-variable">selectedBy</span></span> - the CSS selctor used to get to this node
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> <span class="hljs-variable">sourcePrefix</span></span> - the path string that provides the required folder context to load a src file from the fs
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> <span class="hljs-variable">destBasePath</span></span> - the path string that provides folder context for where to put the string 
- * <span class="hljs-doctag">@property <span class="hljs-type">{number[]}</span> <span class="hljs-variable">widths</span></span> - breakpoints + 1 for larger than last break
- * <span class="hljs-doctag">@property <span class="hljs-type">{number[]}</span> <span class="hljs-variable">breaks</span></span> - where are the image breakpoints - defined by max applicable 769, 1088, 1280
- * <span class="hljs-doctag">@property <span class="hljs-type">{FormatOptions}</span> <span class="hljs-variable">types</span></span> - jpg:{} | webp:{} | heif:{}
- * <span class="hljs-doctag">@property <span class="hljs-type">{number}</span> <span class="hljs-variable">hashlen</span></span> - default = 8;
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> <span class="hljs-variable">addclassnames</span></span> -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> <span class="hljs-variable">prefix</span></span> - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
- * <span class="hljs-doctag">@property <span class="hljs-type">{string}</span> <span class="hljs-variable">suffix</span></span> - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;
- */</span>
+				<pre><code class="language-js"><span style="color: #008000">/**</span>
+<span style="color: #008000"> *</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">ResizerConfig</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">selectedBy</span><span style="color: #008000"> - the CSS selctor used to get to this node</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">sourcePrefix</span><span style="color: #008000"> - the path string that provides the required folder context to load a src file from the fs</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">destBasePath</span><span style="color: #008000"> - the path string that provides folder context for where to put the string </span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number[]}</span><span style="color: #008000"> </span><span style="color: #001080">widths</span><span style="color: #008000"> - breakpoints + 1 for larger than last break</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number[]}</span><span style="color: #008000"> </span><span style="color: #001080">breaks</span><span style="color: #008000"> - where are the image breakpoints - defined by max applicable 769, 1088, 1280</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{FormatOptions}</span><span style="color: #008000"> </span><span style="color: #001080">types</span><span style="color: #008000"> - jpg:{} | webp:{} | heif:{}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number}</span><span style="color: #008000"> </span><span style="color: #001080">hashlen</span><span style="color: #008000"> - default = 8;</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">addclassnames</span><span style="color: #008000"> -  mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">prefix</span><span style="color: #008000"> - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span><span style="color: #008000"> </span><span style="color: #001080">suffix</span><span style="color: #008000"> - mustache-style template string - opts:[classNames, width, ext, epochTime, imgHash]&quot;</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">StringThunk</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{Function}</span></span>
- * <span class="hljs-doctag">@returns <span class="hljs-type">{string}</span></span>
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">StringThunk</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{Function}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@returns</span><span style="color: #008000"> </span><span style="color: #267F99">{string}</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">FormatOption</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{ (JPEG | WEBP | HEIF ) }</span></span>
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">FormatOption</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{ (JPEG | WEBP | HEIF ) }</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">FormatOptions</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{ FormatOption[] }</span></span>
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">FormatOptions</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{ FormatOption[] }</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">JPEG</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{Object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{JPEGopts}</span> <span class="hljs-variable">jpg</span></span> - breakpoints + 1 for larger than last break
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">JPEG</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{Object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{JPEGopts}</span><span style="color: #008000"> </span><span style="color: #001080">jpg</span><span style="color: #008000"> - breakpoints + 1 for larger than last break</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">JPEGopts</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{Object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{number}</span> </span>[quality] - integer 1-100 (optional, default 80)
- * <span class="hljs-doctag">@property <span class="hljs-type">{boolean}</span> </span>[progresive] - use progressive (interlace) scan (optional, default true)
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">JPEGopts</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{Object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number}</span><span style="color: #008000"> </span><span style="color: #001080">[quality]</span><span style="color: #008000"> - integer 1-100 (optional, default 80)</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{boolean}</span><span style="color: #008000"> </span><span style="color: #001080">[progresive]</span><span style="color: #008000"> - use progressive (interlace) scan (optional, default true)</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">WEBP</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{Object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{WEBPopts}</span> <span class="hljs-variable">webp</span></span> - breakpoints + 1 for larger than last break
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">WEBP</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{Object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{WEBPopts}</span><span style="color: #008000"> </span><span style="color: #001080">webp</span><span style="color: #008000"> - breakpoints + 1 for larger than last break</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">WEBPopts</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{Object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{number}</span> </span>[quality] - integer 1-100 (optional, default 80)
- * <span class="hljs-doctag">@property <span class="hljs-type">{boolean}</span> </span>[lossless] - use lossless compression mode (optional, default false)
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">WEBPopts</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{Object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number}</span><span style="color: #008000"> </span><span style="color: #001080">[quality]</span><span style="color: #008000"> - integer 1-100 (optional, default 80)</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{boolean}</span><span style="color: #008000"> </span><span style="color: #001080">[lossless]</span><span style="color: #008000"> - use lossless compression mode (optional, default false)</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">HEIF</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{Object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{HEIFopts}</span> <span class="hljs-variable">heif</span></span> - breakpoints + 1 for larger than last break
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">HEIF</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{Object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{HEIFopts}</span><span style="color: #008000"> </span><span style="color: #001080">heif</span><span style="color: #008000"> - breakpoints + 1 for larger than last break</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">HEIFopts</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{Object}</span></span>
- * <span class="hljs-doctag">@property <span class="hljs-type">{number}</span> </span>[quality] - quality, integer 1-100 (optional, default 80)
- * <span class="hljs-doctag">@property <span class="hljs-type">{HEIFoptsCompression | false}</span> </span>[compression] - compression format: hevc, avc, jpeg, av1 (optional, default &#x27;hevc&#x27;)
- * <span class="hljs-doctag">@property <span class="hljs-type">{boolean}</span> </span>[lossless] - use lossless compression (optional, default false)
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">HEIFopts</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{Object}</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{number}</span><span style="color: #008000"> </span><span style="color: #001080">[quality]</span><span style="color: #008000"> - quality, integer 1-100 (optional, default 80)</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{HEIFoptsCompression | false}</span><span style="color: #008000"> </span><span style="color: #001080">[compression]</span><span style="color: #008000"> - compression format: hevc, avc, jpeg, av1 (optional, default &#039;hevc&#039;)</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@property</span><span style="color: #008000"> </span><span style="color: #267F99">{boolean}</span><span style="color: #008000"> </span><span style="color: #001080">[lossless]</span><span style="color: #008000"> - use lossless compression (optional, default false)</span>
+<span style="color: #008000"> */</span>
 
-<span class="hljs-comment">/**
- * <span class="hljs-doctag">@typedef <span class="hljs-variable">HEIFoptsCompression</span></span>
- * <span class="hljs-doctag">@type <span class="hljs-type">{&#x27;hevc&#x27; | &#x27;avc&#x27; | &#x27;jpeg&#x27; | &#x27;av1&#x27; }</span></span>
- */</span>
+<span style="color: #008000">/**</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@typedef</span><span style="color: #008000"> </span><span style="color: #267F99">HEIFoptsCompression</span>
+<span style="color: #008000"> * </span><span style="color: #0000FF">@type</span><span style="color: #008000"> </span><span style="color: #267F99">{&#039;hevc&#039; | &#039;avc&#039; | &#039;jpeg&#039; | &#039;av1&#039; }</span>
+<span style="color: #008000"> */</span>
+
 </code></pre>
 				<!-- Definitions -->
 			</div>
@@ -285,78 +284,42 @@ unified()
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-reference">
+						<a href="modules.html#default" class="tsd-kind-icon">default</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/config.html" class="tsd-kind-icon">Config</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/dict.html" class="tsd-kind-icon">Dict</a>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/hastnode.html" class="tsd-kind-icon">Hast<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/simpleconfig.html" class="tsd-kind-icon">Simple<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#funcmergestring2obj" class="tsd-kind-icon">Func<wbr>Merge<wbr>String2<wbr>Obj</a>
+						<a href="modules.html#imageformat" class="tsd-kind-icon">Image<wbr>Format</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#funcmergestringorobjval" class="tsd-kind-icon">Func<wbr>Merge<wbr>String<wbr>OrObj<wbr>Val</a>
+						<a href="modules.html#inputconfig" class="tsd-kind-icon">Input<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#funcmergestringval" class="tsd-kind-icon">Func<wbr>Merge<wbr>String<wbr>Val</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#inputconfig" class="tsd-kind-icon">Input<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#mappedmergefuncs" class="tsd-kind-icon">Mapped<wbr>Merge<wbr>Funcs</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#mapppedmergestringorobjvalfunc" class="tsd-kind-icon">Mappped<wbr>Merge<wbr>String<wbr>OrObj<wbr>Val<wbr>Func</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#objectdict" class="tsd-kind-icon">Object<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#objectorstringdict" class="tsd-kind-icon">Object<wbr>OrString<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#stringdict" class="tsd-kind-icon">String<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#hastpaths" class="tsd-kind-icon">HASTpaths</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#normpaths" class="tsd-kind-icon">NORMpaths</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#isarray" class="tsd-kind-icon">is<wbr>Array</a>
+						<a href="modules.html#unifiedplugincallback" class="tsd-kind-icon">Unified<wbr>Plugin<wbr>Callback</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="globals.html#attacher" class="tsd-kind-icon">attacher</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-private">
-						<a href="globals.html#merge" class="tsd-kind-icon">merge</a>
+						<a href="modules.html#attacher" class="tsd-kind-icon">attacher</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="globals.html#mergeconfig" class="tsd-kind-icon">merge<wbr>Config</a>
+						<a href="modules.html#localresolve" class="tsd-kind-icon">local<wbr>Resolve</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="globals.html#mergenode" class="tsd-kind-icon">merge<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-private">
-						<a href="globals.html#nochange" class="tsd-kind-icon">no<wbr>Change</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-private">
-						<a href="globals.html#nochangejustswappath" class="tsd-kind-icon">no<wbr>Change<wbr>Just<wbr>Swap<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-private">
-						<a href="globals.html#parseifstring" class="tsd-kind-icon">parse<wbr>IfString</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-private">
-						<a href="globals.html#parsestringsandswappath" class="tsd-kind-icon">parse<wbr>Strings<wbr>And<wbr>Swap<wbr>Path</a>
+						<a href="modules.html#trimmedhash" class="tsd-kind-icon">trimmed<wbr>Hash</a>
 					</li>
 				</ul>
 			</nav>

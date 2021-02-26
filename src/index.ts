@@ -31,8 +31,9 @@ import type {VFile} from 'vfile'
 import type {PngOptions, JpegOptions, WebpOptions} from 'sharp'
 
 import path from 'path'
-import {selectAll} from 'hast-util-select'
 import {createHash} from 'crypto'
+
+import { selectAll} from 'hast-util-select'
 const { isArray } = Array
 
 // import Mustache from 'mustache'
