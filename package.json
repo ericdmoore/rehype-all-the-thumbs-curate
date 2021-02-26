@@ -11,8 +11,8 @@
     "test": "tape tests/**/*.test.js",
     "tests": "node tests/index.test.js",
     "test:NYC": "nyc npm test | tap-nyc",
-    "docs": "gulp doc && npm run openDocs",
-    "_docs": "jsdoc src/index.js -c .jsdoc.json",
+    "genDocs": "typedoc src/index.ts",
+    "openDocs":"open docs/index.html",
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
     "lint": "eslint src/index.js",
     "build": "tsc",
@@ -77,7 +77,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test && npm run _docs",
+      "pre-commit": "npm test && npm run genDocs",
       "pre-push": "npm test"
     }
   },
