@@ -12,10 +12,13 @@
     "tests": "node tests/index.test.js",
     "test:NYC": "nyc npm test | tap-nyc",
     "genDocs": "typedoc src/index.ts",
-    "openDocs":"open docs/index.html",
+    "openDocs": "open docs/index.html",
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
-    "lint": "eslint src/index.js",
-    "build": "tsc",
+    "lint": "eslint src/index.ts",
+    "lint:fix": "eslint --fix src/index.ts",
+    "build":"npm run build:esb",
+    "build:tsc": "tsc",
+    "build:esb": "npm run esbuild",
     "esbuild": "mkdir -p dist/umd && npm run esbuild:umd && npm run esbuild:min",
     "esbuild:umd": "esbuild src/index.ts --bundle --platform=node > dist/umd/index.js",
     "esbuild:min": "esbuild src/index.ts --bundle --platform=node --minify > dist/index.min.js"
@@ -28,9 +31,15 @@
     "@types/mustache": "^4.0.1",
     "@types/sharp": "^0.26.0",
     "@types/vfile": "^4.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
     "codecov": "^3.8.0",
     "esbuild": "^0.8.0",
-    "eslint": "^7.12.1",
+    "eslint": "^7.20.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
     "gulp-jsdoc3": "^3.0.0",
@@ -78,7 +87,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm test && npm run genDocs",
-      "pre-push": "npm test"
+      "pre-push": "npm test && npm run lint:fix"
     }
   },
   "nyc": {
