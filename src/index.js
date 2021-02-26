@@ -50,15 +50,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "path", "hast-util-select", "crypto"], factory);
+        define(["require", "exports", "path", "crypto", "hast-util-select"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.attacher = exports.trimmedHash = exports.localResolve = void 0;
     var path_1 = __importDefault(require("path"));
-    var hast_util_select_1 = require("hast-util-select");
     var crypto_1 = require("crypto");
+    var hast_util_select_1 = require("hast-util-select");
     var isArray = Array.isArray;
     // import Mustache from 'mustache'
     // const makePrettyPrinter = (indent=2) => (...a:any) => a.length === 1
