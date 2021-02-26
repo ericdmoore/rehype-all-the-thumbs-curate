@@ -1,3 +1,9 @@
 {
-    "extends": "@istanbuljs/nyc-config-typescript"
+    "extends": "@istanbuljs/nyc-config-typescript",
+     "watermarks": {
+        "lines": [75, 95],
+        "functions": [75, 95],
+        "branches": [75, 95],
+        "statements": [75, 95]
+      }
 }

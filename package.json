@@ -10,7 +10,7 @@
   "scripts": {
     "test": "tape tests/**/*.test.js",
     "tests": "node tests/index.test.js",
-    "test:NYC": "nyc npm test | tap-nyc",
+    "test:NYC": "nyc --branches=75 --functions=90 --lines=90 --statements=80 npm test | tap-nyc ",
     "genDocs": "typedoc src/index.ts",
     "openDocs": "open docs/index.html",
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
