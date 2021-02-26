@@ -62,7 +62,13 @@ export const localResolve = (...paths: string[]):string => {
     return noDotDotnoSlashes.join('/')
 }
 
-export const trimmedHash = (n:number) => (b:Buffer) => ():string => createHash('sha256').update(b).digest('hex').slice(0, n)
+/**
+ * Trimmed Hash
+ * @private
+ * @description Take in a Buffer and return a sting with length specified via N
+ * @param n - length of the hash to return
+ */
+const trimmedHash = (n:number) => (b:Buffer) => ():string => createHash('sha256').update(b).digest('hex').slice(0, n)
 
 /**
  * Merge
