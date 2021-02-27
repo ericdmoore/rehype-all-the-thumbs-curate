@@ -160,16 +160,18 @@ const NORMpaths = {
 } as MapppedMergeStringOrObjValFunc
 
 /**
- *
+ * @private
  * @param fallback - ConfigMap
  * @param ob - object with a `properties` key with a ConfigMap type
+ * @description Config sometimes has a data property prefixed in the Dict if its from the DOM
  */
 const mergeNode = (fallback:ConfigMap, ob:{properties:ConfigMap}) => merge(HASTpaths, fallback as ConfigMap, ob.properties)
 
 /**
- *
+ * @private
  * @param fallback - a config map
  * @param ob - also a config map
+ * @description merge the config objects via the paths, target and fallback
  */
 const mergeConfig = (fallback:ConfigMap, ob:ConfigMap = {}) => merge(NORMpaths, fallback as ConfigMap, ob)
 

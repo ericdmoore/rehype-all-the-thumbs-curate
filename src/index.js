@@ -159,15 +159,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             }, {}) })); } });
     var NORMpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChange('sourcePrefix')), noChange('destBasePath')), noChange('prefix')), noChange('suffix')), noChange('hashlen')), noChange('clean')), noChange('addclassnames')), parseIfString('widths')), parseIfString('breaks')), parseIfString('types'));
     /**
-     *
+     * @private
      * @param fallback - ConfigMap
      * @param ob - object with a `properties` key with a ConfigMap type
+     * @description Config sometimes has a data property prefixed in the Dict if its from the DOM
      */
     var mergeNode = function (fallback, ob) { return merge(HASTpaths, fallback, ob.properties); };
     /**
-     *
+     * @private
      * @param fallback - a config map
      * @param ob - also a config map
+     * @description merge the config objects via the paths, target and fallback
      */
     var mergeConfig = function (fallback, ob) {
         if (ob === void 0) { ob = {}; }
@@ -198,14 +200,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             suffix: '-{{width}}w-{{hash}}.{{ext}}'
         };
         var cfg = mergeConfig(defaults, config);
-        // console.log({select})
-        // console.log(0, {cfg})
         // transformer
         return function (tree, vfile, next) {
-            // console.log(1,  JSON.stringify({ vfile1: vfile }, null, 2))
-            // console.log(2,  JSON.stringify({ cfg }, null, 2))
             var selected = hast_util_select_1.selectAll(select, tree);
-            // console.log( JSON.stringify({ selected }, null, 2))
             var srcsCompact = selected
                 .map(function (node) { return ({ node: node, src: node.properties.src }); })
                 .map(function (_a) {
@@ -214,7 +211,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                     // makes a compact config
                     src: src }, mergeConfig(cfg, mergeNode(cfg, node))));
             });
-            // console.log('plugin:curate--', {srcsCompact})
             var srcs = srcsCompact.reduce(function (p, _s) {
                 var s = _s;
                 var partOfSet = {
@@ -255,9 +251,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                 });
                 return __spreadArray(__spreadArray([], p), accSimpleConfig);
             }, []);
-            // prettyPrint(0, 'plugin:curate--', {srcs})
             var vfile_srcs = isArray(vfile.srcs) ? __spreadArray(__spreadArray([], vfile.srcs), srcs) : srcs;
-            // prettyPrint(1, 'plugin:curate--', {vfile})
             vfile.srcs = vfile_srcs;
             // return vfile
             next(null, tree, vfile);
