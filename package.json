@@ -12,6 +12,7 @@
     "tests": "node tests/index.test.js",
     "test:NYC": "nyc --branches=75 --functions=90 --lines=90 --statements=80 npm test | tap-nyc ",
     "test:lcov":"nyc --branches=75 --functions=90 --lines=90 --statements=80 --reporter=lcovonly npm test",
+    "test:clover":"nyc --branches=75 --functions=90 --lines=90 --statements=80 --reporter=clover npm test",
     "genDocs": "typedoc src/index.ts",
     "openDocs": "open docs/index.html",
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
