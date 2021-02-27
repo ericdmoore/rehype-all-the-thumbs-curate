@@ -201,16 +201,9 @@ export const attacher = (config?:InputConfig) => {
 
     const cfg: Config = mergeConfig(defaults, config as unknown as ConfigMap) as unknown as Config
 
-    // console.log({select})
-    // console.log(0, {cfg})
-
     // transformer
     return (tree:Node, vfile:VFile, next:UnifiedPluginCallback) => {
-    // console.log(1,  JSON.stringify({ vfile1: vfile }, null, 2))
-    // console.log(2,  JSON.stringify({ cfg }, null, 2))
-
         const selected = selectAll(select, tree) as HastNode[]
-        // console.log( JSON.stringify({ selected }, null, 2))
 
         const srcsCompact = selected
             .map(node => ({ node, src: (node as HastNode).properties.src }))
@@ -222,8 +215,6 @@ export const attacher = (config?:InputConfig) => {
                   mergeNode(cfg as unknown as ConfigMap, node as HastNode)
                 )
             }))
-
-        // console.log('plugin:curate--', {srcsCompact})
 
         const srcs = srcsCompact.reduce((p, _s) => {
             const s = _s as unknown as Config
@@ -266,10 +257,8 @@ export const attacher = (config?:InputConfig) => {
             return [...p, ...accSimpleConfig]
         }, [] as SimpleConfig[])
 
-        // prettyPrint(0, 'plugin:curate--', {srcs})
         const vfile_srcs = isArray(vfile.srcs) ? [...vfile.srcs as SimpleConfig[], ...srcs] : srcs
 
-        // prettyPrint(1, 'plugin:curate--', {vfile})
         vfile.srcs = vfile_srcs
         // return vfile
         next(null, tree, vfile)
