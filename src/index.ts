@@ -159,7 +159,18 @@ const NORMpaths = {
     ...parseIfString('types')
 } as MapppedMergeStringOrObjValFunc
 
+/**
+ *
+ * @param fallback - ConfigMap
+ * @param ob - object with a `properties` key with a ConfigMap type
+ */
 const mergeNode = (fallback:ConfigMap, ob:{properties:ConfigMap}) => merge(HASTpaths, fallback as ConfigMap, ob.properties)
+
+/**
+ *
+ * @param fallback - a config map
+ * @param ob - also a config map
+ */
 const mergeConfig = (fallback:ConfigMap, ob:ConfigMap = {}) => merge(NORMpaths, fallback as ConfigMap, ob)
 
 /**
@@ -205,8 +216,11 @@ export const attacher = (config?:InputConfig) => {
             .map(node => ({ node, src: (node as HastNode).properties.src }))
             .map(({ src, node }) => ({
                 // makes a compact config
-                ...mergeConfig(cfg as unknown as ConfigMap, mergeNode(cfg as unknown as ConfigMap, node as HastNode)),
-                src
+                src,
+                ...mergeConfig(
+                  cfg as unknown as ConfigMap,
+                  mergeNode(cfg as unknown as ConfigMap, node as HastNode)
+                )
             }))
 
         // console.log('plugin:curate--', {srcsCompact})

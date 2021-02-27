@@ -1,30 +1,4 @@
-/**
- * @title rehype-all-the-thumbs-curate
- * @author Eric Moore
- * @summary Select DOM nodes that have images availble for thumbnailing
- * @description Pluck out Images, and tag the file with instructions for
- * other thumbnailing plugins to use.
- * @see https://unifiedjs.com/explore/package/hast-util-select/#support
- *
- * # Inpput/Output
- *
- * ## Implied Input (Required):
- *
- *   + HTML file with a DOM tree (can be decorate with instructions)
- *
- * ## Input Config (Optional)
- *
- *   - css selctor string
- *   - instructions for thumbnailing images
- *
- * ## Config Preference
- *
- *   HTML > Options
- *
- * ## Output
- *
- * -an unchanged tree (aka: vfile.contents)
- */
+/* eslint-disable no-use-before-define, camelcase */
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -55,16 +29,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.attacher = exports.trimmedHash = exports.localResolve = void 0;
+    exports.attacher = exports.localResolve = void 0;
     var path_1 = __importDefault(require("path"));
     var crypto_1 = require("crypto");
     var hast_util_select_1 = require("hast-util-select");
     var isArray = Array.isArray;
-    // import Mustache from 'mustache'
-    // const makePrettyPrinter = (indent=2) => (...a:any) => a.length === 1
-    //  ? console.log(JSON.stringify( a[0], null, indent))
-    //  : console.log(...a.slice(0,-1), JSON.stringify(a.slice(-1)[0], null, indent))
-    // const prettyPrint = makePrettyPrinter()
     /**
      * Resolve
      * @summary Merge path segments together
@@ -96,8 +65,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
         return noDotDotnoSlashes.join('/');
     };
     exports.localResolve = localResolve;
+    /**
+     * Trimmed Hash
+     * @private
+     * @description Take in a Buffer and return a sting with length specified via N
+     * @param n - length of the hash to return
+     */
     var trimmedHash = function (n) { return function (b) { return function () { return crypto_1.createHash('sha256').update(b).digest('hex').slice(0, n); }; }; };
-    exports.trimmedHash = trimmedHash;
     /**
      * Merge
      * @private
@@ -184,7 +158,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                 return (__assign(__assign({}, p), (_a = {}, _a[c] = {}, _a)));
             }, {}) })); } });
     var NORMpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChange('sourcePrefix')), noChange('destBasePath')), noChange('prefix')), noChange('suffix')), noChange('hashlen')), noChange('clean')), noChange('addclassnames')), parseIfString('widths')), parseIfString('breaks')), parseIfString('types'));
+    /**
+     *
+     * @param fallback - ConfigMap
+     * @param ob - object with a `properties` key with a ConfigMap type
+     */
     var mergeNode = function (fallback, ob) { return merge(HASTpaths, fallback, ob.properties); };
+    /**
+     *
+     * @param fallback - a config map
+     * @param ob - also a config map
+     */
     var mergeConfig = function (fallback, ob) {
         if (ob === void 0) { ob = {}; }
         return merge(NORMpaths, fallback, ob);
@@ -226,7 +210,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                 .map(function (node) { return ({ node: node, src: node.properties.src }); })
                 .map(function (_a) {
                 var src = _a.src, node = _a.node;
-                return (__assign(__assign({}, mergeConfig(cfg, mergeNode(cfg, node))), { src: src }));
+                return (__assign({ 
+                    // makes a compact config
+                    src: src }, mergeConfig(cfg, mergeNode(cfg, node))));
             });
             // console.log('plugin:curate--', {srcsCompact})
             var srcs = srcsCompact.reduce(function (p, _s) {
@@ -234,7 +220,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                 var partOfSet = {
                     breaks: s.breaks,
                     types: s.types,
-                    widths: s.widths,
+                    widths: s.widths
                 };
                 var accSimpleConfig = [];
                 Object.entries(s.types).forEach(function (_a) {
@@ -255,7 +241,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                                 width: width,
                                 format: (_a = {}, _a[format] = opts, _a),
                                 hashlen: s.hashlen,
-                                hash: exports.trimmedHash(s.hashlen)
+                                hash: trimmedHash(s.hashlen)
                             },
                             getReadPath: function (i) { return !i
                                 ? exports.localResolve(s.sourcePrefix, fileName + "." + ext)
