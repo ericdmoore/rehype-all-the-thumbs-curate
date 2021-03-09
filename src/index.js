@@ -1,4 +1,30 @@
-/* eslint-disable no-use-before-define, camelcase */
+/**
+ * @title rehype-all-the-thumbs-curate
+ * @author Eric Moore
+ * @summary Select DOM nodes that have images availble for thumbnailing
+ * @description Pluck out Images, and tag the file with instructions for
+ * other thumbnailing plugins to use.
+ * @see https://unifiedjs.com/explore/package/hast-util-select/#support
+ *
+ * # Inpput/Output
+ *
+ * ## Implied Input (Required):
+ *
+ *   + HTML file with a DOM tree (can be decorate with instructions)
+ *
+ * ## Input Config (Optional)
+ *
+ *   - css selctor string
+ *   - instructions for thumbnailing images
+ *
+ * ## Config Preference
+ *
+ *   HTML > Options
+ *
+ * ## Output
+ *
+ * -an unchanged tree (aka: vfile.contents)
+ */
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -15,9 +41,6 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
         to[j] = from[i];
     return to;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         var v = factory(require, exports);
@@ -29,8 +52,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.attacher = exports.localResolve = void 0;
-    var path_1 = __importDefault(require("path"));
+    exports.attacher = exports.pathJoin = void 0;
+    var path_1 = require("path"); // no dot prefix
     var crypto_1 = require("crypto");
     var hast_util_select_1 = require("hast-util-select");
     var isArray = Array.isArray;
@@ -41,41 +64,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
      * intelligibly  merge them together to form one path.
      * @todo the up path
      */
-    var localResolve = function () {
+    var pathJoin = function () {
         var paths = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             paths[_i] = arguments[_i];
         }
-        var withDotsButNoSlashes = paths.map(function (c, i, a) {
+        var pathsNoSlashes = paths.map(function (c, i, a) {
+            c = c.startsWith('./') ? c.slice(2) : c;
             c = c.startsWith('/') ? c.slice(1) : c;
             c = c.endsWith('/') ? c.slice(0, -1) : c;
             return c;
         });
-        var noDotDotnoSlashes = withDotsButNoSlashes.reduce(function (p, c) {
+        return pathsNoSlashes.reduce(function (p, c) {
             if (c === '' || c === ' ') {
                 return p;
             }
-            if (c.startsWith('..')) {
-                return exports.localResolve.apply(void 0, __spreadArray(__spreadArray([], p.slice(0, -1)), [c.slice(2)])).split('/');
-            }
-            else {
-                return __spreadArray(__spreadArray([], p), [c]);
-            }
-        }, []);
-        return noDotDotnoSlashes.join('/');
+            return c.startsWith('..')
+                ? exports.pathJoin.apply(void 0, __spreadArray(__spreadArray([], p.slice(0, -1)), [c.slice(2)])).split('/')
+                : __spreadArray(__spreadArray([], p), [c]);
+        }, []).join('/');
     };
-    exports.localResolve = localResolve;
+    exports.pathJoin = pathJoin;
     /**
      * Trimmed Hash
      * @private
      * @description Take in a Buffer and return a sting with length specified via N
      * @param n - length of the hash to return
      */
-    var trimmedHash = function (n) { return function (b) { return function () { return crypto_1.createHash('sha256').update(b).digest('hex').slice(0, n); }; }; };
+    var trimmedHash = function (n) { return function (b) { return crypto_1.createHash('sha256').update(b).digest('hex').slice(0, n); }; };
     /**
-     * Merge
-     * @private
-     */
+      * Merge
+      * @private
+      */
     var merge = function (paths, fallback, obj) {
         return Object.entries(paths)
             .reduce(function (acc, _a) {
@@ -153,11 +173,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             },
             _a);
     };
-    var HASTpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChangeJustSwapPath('dataSourceprefix', 'sourcePrefix')), noChangeJustSwapPath('dataDestbasepath', 'destBasePath')), noChangeJustSwapPath('dataPrefix', 'prefix')), noChangeJustSwapPath('dataSuffix', 'suffix')), parseStringsAndSwapPath('dataHashlen', 'hashlen')), parseStringsAndSwapPath('dataClean', 'clean')), parseStringsAndSwapPath('dataWidths', 'widths')), parseStringsAndSwapPath('dataBreaks', 'breaks')), { dataAddclassnames: function (a, sa) { return (__assign(__assign({}, a), { addclassnames: sa.split(' ') })); } }), { dataTypes: function (a, s) { return (__assign(__assign({}, a), { types: s.split(',').reduce(function (p, c) {
+    var HASTpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChangeJustSwapPath('dataSourceprefix', 'sourcePrefix')), noChangeJustSwapPath('dataDestbasepath', 'destBasePath')), noChangeJustSwapPath('dataPathTmpl', 'pathTmpl')), parseStringsAndSwapPath('dataHashlen', 'hashlen')), parseStringsAndSwapPath('dataClean', 'clean')), parseStringsAndSwapPath('dataWidths', 'widths')), parseStringsAndSwapPath('dataWidthratio', 'widthratio')), parseStringsAndSwapPath('dataBreaks', 'breaks')), { dataAddclassnames: function (a, sa) { return (__assign(__assign({}, a), { addclassnames: sa.split(' ') })); } }), { dataTypes: function (a, s) { return (__assign(__assign({}, a), { types: s.split(',').reduce(function (p, c) {
                 var _a;
                 return (__assign(__assign({}, p), (_a = {}, _a[c] = {}, _a)));
             }, {}) })); } });
-    var NORMpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChange('sourcePrefix')), noChange('destBasePath')), noChange('prefix')), noChange('suffix')), noChange('hashlen')), noChange('clean')), noChange('addclassnames')), parseIfString('widths')), parseIfString('breaks')), parseIfString('types'));
+    var NORMpaths = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, noChange('selectedBy')), noChange('sourcePrefix')), noChange('destBasePath')), noChange('filepathPrefix')), noChange('pathTmpl')), noChange('hashlen')), noChange('clean')), noChange('addclassnames')), parseIfString('widths')), parseIfString('widthatio')), parseIfString('breaks')), parseIfString('types'));
     /**
      * @private
      * @param fallback - ConfigMap
@@ -196,8 +216,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             breaks: [640, 980, 1020],
             widths: [100, 250, 450, 600],
             addclassnames: ['all-thumbed'],
-            prefix: 'optim/',
-            suffix: '-{{width}}w-{{hash}}.{{ext}}'
+            widthratio: 2,
+            pathTmpl: '/optim/{{filename}}-{{width}}w-{{hash}}.{{ext}}'
         };
         var cfg = mergeConfig(defaults, config);
         // transformer
@@ -209,8 +229,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                 var src = _a.src, node = _a.node;
                 return (__assign({ 
                     // makes a compact config
-                    src: src }, mergeConfig(cfg, mergeNode(cfg, node))));
+                    src: src }, mergeConfig(cfg, mergeNode(cfg, node) // node config goes 2nd to overrite if needed
+                )));
             });
+            // console.log('A.', 'srcsCompact', { srcsCompact })
             var srcs = srcsCompact.reduce(function (p, _s) {
                 var s = _s;
                 var partOfSet = {
@@ -218,40 +240,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
                     types: s.types,
                     widths: s.widths
                 };
-                var accSimpleConfig = [];
                 Object.entries(s.types).forEach(function (_a) {
                     var format = _a[0], opts = _a[1];
                     s.widths.forEach(function (width) {
                         var _a;
-                        var ext = path_1.default.extname(s.src).slice(1); // no dot prefix
-                        var fileName = path_1.default.basename(s.src, "." + ext);
-                        accSimpleConfig.push({
+                        var ext = path_1.extname(s.src).slice(1); // no dot prefix
+                        ext = ext === '' ? 'Buffer' : ext;
+                        // if we can't  match up src to a set of generatyed pics via postiion
+                        // then perhaps we could set an ID of the src
+                        s.data = __assign(__assign({}, s.data), { _id: s.src });
+                        p.push({
                             selectedBy: s.selectedBy,
                             addclassnames: s.addclassnames,
                             input: {
                                 ext: ext,
-                                fileName: fileName,
-                                pathPrefix: s.sourcePrefix
+                                fileName: path_1.basename(s.src, "." + ext),
+                                filepathPrefix: path_1.dirname(s.src),
+                                rawFilePath: s.src,
+                                domPath: ''
                             },
-                            output: {
-                                width: width,
-                                format: (_a = {}, _a[format] = opts, _a),
-                                hashlen: s.hashlen,
-                                hash: trimmedHash(s.hashlen)
-                            },
-                            getReadPath: function (i) { return !i
-                                ? exports.localResolve(s.sourcePrefix, fileName + "." + ext)
-                                : i.render(path_1.default.resolve(s.sourcePrefix, s.src), i.data); },
-                            getWritePath: function (i) { return !i
-                                ? exports.localResolve(s.destBasePath, "" + s.prefix + fileName + s.suffix)
-                                : i.render(path_1.default.resolve(s.destBasePath, "" + s.prefix + fileName + s.suffix), i.data); },
+                            output: __assign(__assign(__assign({ width: width, format: (_a = {}, _a[format] = opts, _a) }, ((s === null || s === void 0 ? void 0 : s.widthRatio) ? { widthRatio: s.widthRatio } : {})), ((s === null || s === void 0 ? void 0 : s.pathTmpl) ? { pathTmpl: s.pathTmpl } : {})), { hash: trimmedHash(s.hashlen) }),
                             partOfSet: partOfSet
                         });
                     });
                 });
-                return __spreadArray(__spreadArray([], p), accSimpleConfig);
+                return p;
             }, []);
+            // console.log('B.', 'srcs', { srcs })
             var vfile_srcs = isArray(vfile.srcs) ? __spreadArray(__spreadArray([], vfile.srcs), srcs) : srcs;
+            // console.log('C.', 'vfile_srcs', { vfile_srcs })
             vfile.srcs = vfile_srcs;
             // return vfile
             next(null, tree, vfile);

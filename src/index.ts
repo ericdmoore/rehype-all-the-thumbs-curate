@@ -1,5 +1,3 @@
-/* eslint-disable no-use-before-define, camelcase */
-
 /**
  * @title rehype-all-the-thumbs-curate
  * @author Eric Moore
@@ -28,10 +26,25 @@
  * -an unchanged tree (aka: vfile.contents)
  */
 
+/* eslint-disable no-use-before-define, camelcase */
+
+/**
+ * @todo rewrite with no "string path getting"
+ * Config For what to do with a node will come from:
+ * - Selection String = DOM Node > plugin config > package.json > code default
+ *    - defaults for:
+ *      - DOM Node Lo
+ * c: `html .rehype-thumbs-curate-select`
+ *      - select str: 'picture[thumbnails="true"]>img'
+ * - Config Values = DOM Node > plugin config > package.json > code default
+ * -
+ */
+
 import type { Node } from 'unist'
 import type { VFile } from 'vfile'
 import type { PngOptions, JpegOptions, WebpOptions } from 'sharp'
-import path from 'path'
+
+import { extname, basename, dirname } from 'path' // no dot prefix
 import { createHash } from 'crypto'
 import { selectAll } from 'hast-util-select'
 const { isArray } = Array
@@ -43,23 +56,21 @@ const { isArray } = Array
  * intelligibly  merge them together to form one path.
  * @todo the up path
  */
-export const localResolve = (...paths: string[]):string => {
-    const withDotsButNoSlashes = paths.map((c, i, a) => {
+export const pathJoin = (...paths: string[]):string => {
+    const pathsNoSlashes = paths.map((c, i, a) => {
+        c = c.startsWith('./') ? c.slice(2) : c
         c = c.startsWith('/') ? c.slice(1) : c
         c = c.endsWith('/') ? c.slice(0, -1) : c
         return c
     })
-    const noDotDotnoSlashes = withDotsButNoSlashes.reduce((p, c) => {
+    return pathsNoSlashes.reduce((p, c) => {
         if (c === '' || c === ' ') {
             return p
         }
-        if (c.startsWith('..')) {
-            return localResolve(...[...p.slice(0, -1), c.slice(2)]).split('/')
-        } else {
-            return [...p, c]
-        }
-    }, [] as string[])
-    return noDotDotnoSlashes.join('/')
+        return c.startsWith('..')
+            ? pathJoin(...[...p.slice(0, -1), c.slice(2)]).split('/')
+            : [...p, c]
+    }, [] as string[]).join('/')
 }
 
 /**
@@ -68,12 +79,12 @@ export const localResolve = (...paths: string[]):string => {
  * @description Take in a Buffer and return a sting with length specified via N
  * @param n - length of the hash to return
  */
-const trimmedHash = (n:number) => (b:Buffer) => ():string => createHash('sha256').update(b).digest('hex').slice(0, n)
+const trimmedHash = (n:number) => (b:Buffer):string => createHash('sha256').update(b).digest('hex').slice(0, n)
 
 /**
- * Merge
- * @private
- */
+  * Merge
+  * @private
+  */
 const merge = (paths: MapppedMergeStringOrObjValFunc, fallback:ConfigMap, obj:ConfigMap) =>
     Object.entries(paths)
         .reduce((acc, [prop, prepFn]) =>
@@ -135,11 +146,11 @@ const HASTpaths = {
     ...noChange('selectedBy'),
     ...noChangeJustSwapPath('dataSourceprefix', 'sourcePrefix'),
     ...noChangeJustSwapPath('dataDestbasepath', 'destBasePath'),
-    ...noChangeJustSwapPath('dataPrefix', 'prefix'),
-    ...noChangeJustSwapPath('dataSuffix', 'suffix'),
+    ...noChangeJustSwapPath('dataPathTmpl', 'pathTmpl'),
     ...parseStringsAndSwapPath('dataHashlen', 'hashlen'),
     ...parseStringsAndSwapPath('dataClean', 'clean'),
     ...parseStringsAndSwapPath('dataWidths', 'widths'),
+    ...parseStringsAndSwapPath('dataWidthratio', 'widthratio'),
     ...parseStringsAndSwapPath('dataBreaks', 'breaks'),
     ...({ dataAddclassnames: (a, sa) => ({ ...a, addclassnames: sa.split(' ') }) } as MappedMergeFuncs),
     ...({ dataTypes: (a, s) => ({ ...a, types: s.split(',').reduce((p, c) => ({ ...p, [c]: {} }), {}) }) } as Dict<FuncMergeString2Obj>)
@@ -149,12 +160,13 @@ const NORMpaths = {
     ...noChange('selectedBy'),
     ...noChange('sourcePrefix'),
     ...noChange('destBasePath'),
-    ...noChange('prefix'),
-    ...noChange('suffix'),
+    ...noChange('filepathPrefix'),
+    ...noChange('pathTmpl'),
     ...noChange('hashlen'),
     ...noChange('clean'),
     ...noChange('addclassnames'),
     ...parseIfString('widths'),
+    ...parseIfString('widthatio'),
     ...parseIfString('breaks'),
     ...parseIfString('types')
 } as MapppedMergeStringOrObjValFunc
@@ -197,8 +209,8 @@ export const attacher = (config?:InputConfig) => {
         breaks: [640, 980, 1020],
         widths: [100, 250, 450, 600],
         addclassnames: ['all-thumbed'],
-        prefix: 'optim/',
-        suffix: '-{{width}}w-{{hash}}.{{ext}}'
+        widthratio: 2,
+        pathTmpl: '/optim/{{filename}}-{{width}}w-{{hash}}.{{ext}}'
     } as ConfigMap
 
     const cfg: Config = mergeConfig(defaults, config as unknown as ConfigMap) as unknown as Config
@@ -214,54 +226,60 @@ export const attacher = (config?:InputConfig) => {
                 src,
                 ...mergeConfig(
                   cfg as unknown as ConfigMap,
-                  mergeNode(cfg as unknown as ConfigMap, node as HastNode)
-                )
-            }))
+                  mergeNode(cfg as unknown as ConfigMap, node as HastNode) // node config goes 2nd to overrite if needed
+                ) as ConfigMap
+            })) as (ConfigMap & {src: ConfigValueTypes})[]
+
+        // console.log('A.', 'srcsCompact', { srcsCompact })
 
         const srcs = srcsCompact.reduce((p, _s) => {
-            const s = _s as unknown as Config
+            const s = _s as unknown as Config & HastNode
             const partOfSet = {
                 breaks: s.breaks,
                 types: s.types,
                 widths: s.widths
             }
 
-            const accSimpleConfig = [] as SimpleConfig[]
             Object.entries(s.types).forEach(([format, opts]) => {
                 s.widths.forEach(width => {
-                    const ext = path.extname(s.src).slice(1) // no dot prefix
-                    const fileName = path.basename(s.src, `.${ext}`)
+                    let ext = extname(s.src).slice(1) // no dot prefix
+                    ext = ext === '' ? 'Buffer' : ext
+                    // if we can't  match up src to a set of generatyed pics via postiion
+                    // then perhaps we could set an ID of the src
 
-                    accSimpleConfig.push({
+                    s.data = { ...s.data, _id: s.src }
+
+                    p.push({
                         selectedBy: s.selectedBy,
                         addclassnames: s.addclassnames,
                         input: {
                             ext,
-                            fileName,
-                            pathPrefix: s.sourcePrefix
+                            fileName: basename(s.src, `.${ext}`),
+                            filepathPrefix: dirname(s.src),
+                            rawFilePath: s.src,
+                            domPath: ''
                         },
                         output: {
                             width,
                             format: { [format]: opts } as ImageFormat,
-                            hashlen: s.hashlen,
+                            ...(s?.widthRatio ? { widthRatio: s.widthRatio } : {}),
+                            ...(s?.pathTmpl ? { pathTmpl: s.pathTmpl } : {}),
                             hash: trimmedHash(s.hashlen)
                         },
-                        getReadPath: (i?: IPathData) => !i
-                            ? localResolve(s.sourcePrefix, `${fileName}.${ext}`)
-                            : i.render(path.resolve(s.sourcePrefix, s.src), i.data),
-                        getWritePath: (i?: IPathData) => !i
-                            ? localResolve(s.destBasePath, `${s.prefix}${fileName}${s.suffix}`)
-                            : i.render(path.resolve(s.destBasePath, `${s.prefix}${fileName}${s.suffix}`), i.data),
                         partOfSet
                     })
                 })
             })
-            return [...p, ...accSimpleConfig]
+            return p
         }, [] as SimpleConfig[])
+
+        // console.log('B.', 'srcs', { srcs })
 
         const vfile_srcs = isArray(vfile.srcs) ? [...vfile.srcs as SimpleConfig[], ...srcs] : srcs
 
+        // console.log('C.', 'vfile_srcs', { vfile_srcs })
         vfile.srcs = vfile_srcs
+
         // return vfile
         next(null, tree, vfile)
     }
@@ -299,26 +317,22 @@ export type InputConfig = Partial<BaseConfig> & {
   select?: string | (()=>string)
 }
 
-interface IPathData{
-  render: (template:string, view:any) => string
-  data: any,
-}
-
 export interface SimpleConfig{
   selectedBy: string
   addclassnames: string[]
-  getReadPath: (i?: {data:any, render:(template:string, view:any)=>string})=> string
-  getWritePath: (i?: {data:any, render:(template:string, view:any)=>string})=> string
-  output:{
-    width: number
-    hashlen: number
-    format: ImageFormat
-    hash: (b:Buffer) => () => string
-  }
   input:{
-    pathPrefix: string
+    domPath: string
+    filepathPrefix: string
     fileName: string
     ext: string
+    rawFilePath:string
+  }
+  output:{
+    width: number
+    format: ImageFormat
+    hash: (b:Buffer) => string
+    pathTmpl?: string
+    widthratio?: number
   }
   partOfSet:{
     widths: number[]
@@ -331,15 +345,13 @@ export type ImageFormat = {jpg: JpegOptions} | {webp: WebpOptions} | {png: PngOp
 export type UnifiedPluginCallback = (err: Error | null | undefined, tree: Node, vfile: VFile) => void
 
 interface BaseConfig{
-  sourcePrefix: string
-  destBasePath : string
   widths: number[]
   breaks: number[]
   types: ImageFormat
-  hashlen:number
+  hashlen: number
   addclassnames: string[]
-  prefix: string
-  suffix: string
+  widthRatio?: number
+  pathTmpl?: string
 }
 
 interface Dict<T>{[key:string]:T}

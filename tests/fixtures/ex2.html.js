@@ -23,13 +23,21 @@ exports.html = `<!doctype html>
 </head>
 
 <body>
-  <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
-  <script src="js/vendor/modernizr-{{MODERNIZR_VERSION}}.min.js"></script>
-  <script src="js/app.js"></script>
+
+  <h1>Example 3</h1>
+  <h2>3 images</h1>
+  <p> Hello world! This is HTML5 Boilerplate.</p>
 
   <picture thumbnails='true'>
-      <img src='thumb.jpg' alt="example image"/>
+    <img src='thumb.jpg' alt="example image"/>
+  </picture>
+
+  <picture thumbnails='true'>
+    <img src='nails.jpg' data-widthratio="2" alt="example image"/>
+  </picture>
+
+  <picture thumbnails='true'>
+    <img src='//via.placeholder.com/150' alt="example image"/>
   </picture>
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
@@ -38,14 +46,8 @@ exports.html = `<!doctype html>
     ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
   </script>
   <script src="https://www.google-analytics.com/analytics.js" async></script>
-
-    <picture thumbnails='true'>
-        <img src='nails.jpg' alt="example image"/>
-    </picture>
-
-    <picture thumbnails='true'>
-      <img src='https://via.placeholder.com/150' alt="example image"/>
-    </picture>
+  <script src="js/vendor/modernizr-{{MODERNIZR_VERSION}}.min.js"></script>
+  <script src="js/app.js"></script>
 
 </body>
 </html>`
