@@ -11,7 +11,7 @@
     "dist/cjs/index.js"
   ],
   "main": "dist/umd/index.js",
-  "types": "./src/index.d.ts",
+  "types": "src/index.ts",
   "scripts": {
     "test": "npm run 'build:tsc'; tape tests/**/*.test.js",
     "removeBuild": "rm -f src/index.js",
