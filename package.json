@@ -2,15 +2,16 @@
   "name": "rehype-all-the-thumbs-curate",
   "version": "0.3.0",
   "description": "Supporting rehype-all-the-thumbs by finding elements to be processed",
+  "files": [
+    "src/index.ts",
+    "src/index.d.ts",
+    "src/index.js",
+    "dist/index.min.js",
+    "dist/umd/index.js",
+    "dist/cjs/index.js"
+  ],
   "main": "dist/umd/index.js",
   "types": "./src/index.d.ts",
-  "files": [
-    "src/index.js",
-    "src/index.d.ts",
-    "src/index.ts",
-    "dist/umd/index.js",
-    "dist/index.min.js"
-  ],
   "scripts": {
     "test": "npm run 'build:tsc'; tape tests/**/*.test.js",
     "removeBuild": "rm -f src/index.js",
@@ -26,8 +27,9 @@
     "build": "npm run build:esb",
     "build:tsc": "tsc",
     "build:esb": "npm run esbuild",
-    "esbuild": "mkdir -p dist/umd && npm run esbuild:umd && npm run esbuild:min",
+    "esbuild": "mkdir -p dist/umd ; mkdir -p dist/cjs ; npm run esbuild:umd ; npm run esbuild:cjs ; npm run esbuild:min",
     "esbuild:umd": "esbuild src/index.ts --bundle --platform=node > dist/umd/index.js",
+    "esbuild:cjs": "esbuild src/index.ts --platform=node > dist/cjs/index.cjs",
     "esbuild:min": "esbuild src/index.ts --bundle --platform=node --minify > dist/index.min.js"
   },
   "dependencies": {
