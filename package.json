@@ -84,8 +84,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test && npm run genDocs",
-      "pre-push": "npm test && npm run lint:fix"
+      "pre-commit": "npm test",
+      "pre-push": "npm run lint:fix && npm test"
     }
   },
   "nyc": {
