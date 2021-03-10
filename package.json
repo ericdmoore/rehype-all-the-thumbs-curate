@@ -1,6 +1,6 @@
 {
   "name": "rehype-all-the-thumbs-curate",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Supporting rehype-all-the-thumbs by finding elements to be processed",
   "files": [
     "src/index.ts",
