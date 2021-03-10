@@ -2,16 +2,20 @@
   "name": "rehype-all-the-thumbs-curate",
   "version": "0.3.0",
   "description": "Supporting rehype-all-the-thumbs by finding elements to be processed",
-  "main": "src/index.js",
+  "main": "dist/umd/index.js",
+  "types": "./src/index.d.ts",
   "files": [
+    "src/index.js",
+    "src/index.d.ts",
+    "src/index.ts",
     "dist/umd/index.js",
     "dist/index.min.js"
   ],
   "scripts": {
-    "test": "tape tests/**/*.test.js",
-    "removeBuild": "rm src/index.js >& /dev/null",
-    "tests": " npm run removeBuild || ts-node tests/index.test.js",
-    "test:NYC": "nyc   --branches=75 --functions=75 --lines=90 --statements=80 npm run tests | tap-nyc ",
+    "test": "npm run 'build:tsc'; tape tests/**/*.test.js",
+    "removeBuild": "rm -f src/index.js",
+    "tests": "rm -f src/index.js; ts-node tests/index.test.js",
+    "test:NYC": "nyc    --branches=75 --functions=75 --lines=90 --statements=80 npm run tests | tap-nyc ",
     "test:lcov": "nyc   --branches=75 --functions=75 --lines=90 --statements=80 --reporter=lcovonly npm run tests",
     "test:clover": "nyc --branches=75 --functions=75 --lines=90 --statements=80 --reporter=clover npm run tests",
     "genDocs": "typedoc src/index.ts",
@@ -62,7 +66,11 @@
     "vfile-reporter": "^6.0.1",
     "vfile-reporter-pretty": "^5.0.0"
   },
-  "author": "Eric D Moore",
+  "author": {
+    "name":"Eric D Moore",
+    "url": "https://im.ericdmoore.com",
+    "email": "ericdmoore+rehype-all-the-thumbs-curate@gmail.com"
+  },
   "license": "MIT",
   "homepage": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate#readme",
   "bugs": {
@@ -70,7 +78,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ericdmoore/rehype-all-the-thumbs-curate.git"
+    "url": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate.git"
   },
   "husky": {
     "hooks": {
