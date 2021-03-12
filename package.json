@@ -3,12 +3,8 @@
   "version": "0.4.2",
   "description": "Supporting rehype-all-the-thumbs by finding elements to be processed",
   "files": [
-    "src/index.ts",
-    "src/index.d.ts",
-    "src/index.js",
-    "dist/index.min.js",
-    "dist/umd/index.js",
-    "dist/cjs/index.js",
+    "src/",
+    "dist/",
     "typings/"
   ],
   "main": "dist/umd/index.js",
