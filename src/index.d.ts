@@ -69,7 +69,6 @@ export interface SimpleConfig {
     selectedBy: string;
     addclassnames: string[];
     input: {
-        domPath: string;
         filepathPrefix: string;
         fileName: string;
         ext: string;
@@ -79,7 +78,7 @@ export interface SimpleConfig {
         width: number;
         format: ImageFormat;
         hash: (b: Buffer) => string;
-        pathTmpl?: string;
+        pathTmpl: string;
         widthratio?: number;
     };
     partOfSet: {

@@ -166,10 +166,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
         var _a;
         return (_a = {},
             _a[spath] = function (a, maybeS) {
-                var _a, _b;
-                return typeof maybeS === 'string'
-                    ? __assign(__assign({}, a), (_a = {}, _a[spath] = JSON.parse(maybeS), _a))
-                    : __assign(__assign({}, a), (_b = {}, _b[spath] = maybeS, _b));
+                var _a;
+                // typeof maybeS === 'string'
+                //   ? { ...a, [spath]: JSON.parse(maybeS) } as ObjectOrStringDict
+                //   :
+                return (__assign(__assign({}, a), (_a = {}, _a[spath] = maybeS, _a)));
             },
             _a);
     };
@@ -216,7 +217,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
             breaks: [640, 980, 1020],
             widths: [100, 250, 450, 600],
             addclassnames: ['all-thumbed'],
-            widthratio: 2,
+            widthratio: 1.7778,
             pathTmpl: '/optim/{{filename}}-{{width}}w-{{hash}}.{{ext}}'
         };
         var cfg = mergeConfig(defaults, config);
@@ -244,6 +245,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
                     var format = _a[0], opts = _a[1];
                     s.widths.forEach(function (width) {
                         var _a;
+                        var _b, _c;
                         var ext = path_1.extname(s.src).slice(1); // no dot prefix
                         ext = ext === '' ? 'Buffer' : ext;
                         // if we can't  match up src to a set of generatyed pics via postiion
@@ -256,10 +258,10 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
                                 ext: ext,
                                 fileName: path_1.basename(s.src, "." + ext),
                                 filepathPrefix: path_1.dirname(s.src),
-                                rawFilePath: s.src,
-                                domPath: ''
+                                rawFilePath: s.src
+                                // domPath: ''
                             },
-                            output: __assign(__assign(__assign({ width: width, format: (_a = {}, _a[format] = opts, _a) }, ((s === null || s === void 0 ? void 0 : s.widthRatio) ? { widthRatio: s.widthRatio } : {})), ((s === null || s === void 0 ? void 0 : s.pathTmpl) ? { pathTmpl: s.pathTmpl } : {})), { hash: trimmedHash(s.hashlen) }),
+                            output: __assign({ width: width, format: (_a = {}, _a[format] = opts, _a), pathTmpl: (_c = (_b = s.pathTmpl) !== null && _b !== void 0 ? _b : cfg.pathTmpl) !== null && _c !== void 0 ? _c : defaults.pathTmpl, hash: trimmedHash(s.hashlen) }, ((s === null || s === void 0 ? void 0 : s.widthRatio) ? { widthRatio: s.widthRatio } : {})),
                             partOfSet: partOfSet
                         });
                     });

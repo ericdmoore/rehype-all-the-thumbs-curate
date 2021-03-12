@@ -137,9 +137,10 @@ const noChange = (spath:string) => ({ [spath]: (a:StringDict, s:string) => ({ ..
  */
 const parseIfString = (spath:string) => ({
     [spath]: (a:ObjectOrStringDict, maybeS:string|object) =>
-        typeof maybeS === 'string'
-            ? { ...a, [spath]: JSON.parse(maybeS) } as ObjectOrStringDict
-            : { ...a, [spath]: maybeS }
+        // typeof maybeS === 'string'
+        //   ? { ...a, [spath]: JSON.parse(maybeS) } as ObjectOrStringDict
+        //   :
+        ({ ...a, [spath]: maybeS })
 }) as MapppedMergeStringOrObjValFunc
 
 const HASTpaths = {
@@ -209,7 +210,7 @@ export const attacher = (config?:InputConfig) => {
         breaks: [640, 980, 1020],
         widths: [100, 250, 450, 600],
         addclassnames: ['all-thumbed'],
-        widthratio: 2,
+        widthratio: 1.7778,
         pathTmpl: '/optim/{{filename}}-{{width}}w-{{hash}}.{{ext}}'
     } as ConfigMap
 
@@ -256,15 +257,15 @@ export const attacher = (config?:InputConfig) => {
                             ext,
                             fileName: basename(s.src, `.${ext}`),
                             filepathPrefix: dirname(s.src),
-                            rawFilePath: s.src,
-                            domPath: ''
+                            rawFilePath: s.src
+                            // domPath: ''
                         },
                         output: {
                             width,
                             format: { [format]: opts } as ImageFormat,
-                            ...(s?.widthRatio ? { widthRatio: s.widthRatio } : {}),
-                            ...(s?.pathTmpl ? { pathTmpl: s.pathTmpl } : {}),
-                            hash: trimmedHash(s.hashlen)
+                            pathTmpl: s.pathTmpl ?? cfg.pathTmpl ?? defaults.pathTmpl as string,
+                            hash: trimmedHash(s.hashlen),
+                            ...(s?.widthRatio ? { widthRatio: s.widthRatio } : {})
                         },
                         partOfSet
                     })
@@ -321,7 +322,7 @@ export interface SimpleConfig{
   selectedBy: string
   addclassnames: string[]
   input:{
-    domPath: string
+    // domPath: string
     filepathPrefix: string
     fileName: string
     ext: string
@@ -331,7 +332,7 @@ export interface SimpleConfig{
     width: number
     format: ImageFormat
     hash: (b:Buffer) => string
-    pathTmpl?: string
+    pathTmpl: string
     widthratio?: number
   }
   partOfSet:{

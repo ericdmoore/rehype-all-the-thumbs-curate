@@ -134,7 +134,7 @@ const propDefs = {
     'output.width': '∀ vfile.srcs; ∃ .output.width',
     'output.format': '∀ vfile.srcs; ∃ .ouput.format',
     'output.hash': '∀ vfile.srcs; ∃ .output.hash',
-    // 'output.pathTmpl': '∀ vfile.srcs; ∃ .output.pathTmpl',
+    'output.pathTmpl': '∀ vfile.srcs; ∃ .output.pathTmpl',
     // 'output.widthRatio': '∀ vfile.srcs; ∃ .output.widthRatio', // optional
     partOfSet: '∀ vfile.srcs; ∃ .partOfSet',
     'partOfSet.widths': '∀ vfile.srcs; ∃ .partOfSet.widths',

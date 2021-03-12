@@ -15,8 +15,8 @@
   "types": "src/index.ts",
   "scripts": {
     "test": "npm run 'build:tsc'; tape tests/**/*.test.js",
-    "removeBuild": "rm -f src/index.js",
     "tests": "rm -f src/index.js; ts-node tests/index.test.js",
+    "removeBuild": "rm -f src/index.js",
     "test:NYC": "nyc    --branches=75 --functions=75 --lines=90 --statements=80 npm run tests | tap-nyc ",
     "test:lcov": "nyc   --branches=75 --functions=75 --lines=90 --statements=80 --reporter=lcovonly npm run tests",
     "test:clover": "nyc --branches=75 --functions=75 --lines=90 --statements=80 --reporter=clover npm run tests",
@@ -29,9 +29,9 @@
     "build:tsc": "tsc",
     "build:esb": "npm run esbuild",
     "esbuild": "mkdir -p dist/umd ; mkdir -p dist/cjs ; npm run esbuild:umd ; npm run esbuild:cjs ; npm run esbuild:min",
-    "esbuild:umd": "esbuild src/index.ts --bundle --platform=node > dist/umd/index.js",
-    "esbuild:cjs": "esbuild src/index.ts --platform=node > dist/cjs/index.cjs",
-    "esbuild:min": "esbuild src/index.ts --bundle --platform=node --minify > dist/index.min.js"
+    "esbuild:umd": "esbuild src/index.ts --bundle --platform=node --target=node10          > dist/umd/index.js",
+    "esbuild:cjs": "esbuild src/index.ts          --platform=node --target=node10          > dist/cjs/index.cjs",
+    "esbuild:min": "esbuild src/index.ts --bundle --platform=node --target=node10 --minify > dist/index.min.js"
   },
   "dependencies": {
     "hast-util-select": "^4.0.0"
@@ -71,8 +71,7 @@
   },
   "author": {
     "name": "Eric D Moore",
-    "url": "https://im.ericdmoore.com",
-    "email": "ericdmoore+rehype-all-the-thumbs-curate@gmail.com"
+    "url": "https://im.ericdmoore.com"
   },
   "license": "MIT",
   "homepage": "https://github.com/ericdmoore/rehype-all-the-thumbs-curate#readme",

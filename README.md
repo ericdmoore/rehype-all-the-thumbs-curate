@@ -42,7 +42,7 @@ If that sketch does not sound like the adventure you are on, you might want to t
 - a [HAST](https://github.com/syntax-tree/hast) tree
 
 **_Output_**:
-- unchanged [HAST](https://github.com/syntax-tree/hast) tree
+- [HAST](https://github.com/syntax-tree/hast) tree - perhaps where selected img nodes have an extra attribute to make them easier to find later
 - [vfile](https://github.com/vfile/vfile) with added `srcs` key added to the object
 
 ## Usage
