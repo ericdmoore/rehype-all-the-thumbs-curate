@@ -1,6 +1,6 @@
 {
   "name": "rehype-all-the-thumbs-curate",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Supporting rehype-all-the-thumbs by finding elements to be processed",
   "files": [
     "src/",
@@ -18,10 +18,10 @@
     "test:clover": "nyc --branches=75 --functions=75 --lines=90 --statements=80 --reporter=clover npm run tests",
     "genDocs": "typedoc src/index.ts",
     "openDocs": "open docs/index.html",
-    "cp-dts":"npm run cp-dts-umd; npm run cp-dts-cjs; npm run cp-dts-dist",
-    "cp-dts-umd":"cp src/index.d.ts dist/umd/index.d.ts",
-    "cp-dts-cjs":"cp src/index.d.ts dist/cjs/index.d.ts",
-    "cp-dts-dist":"cp src/index.d.ts dist/index.d.ts",
+    "cp-dts": "npm run cp-dts-umd; npm run cp-dts-cjs; npm run cp-dts-dist",
+    "cp-dts-umd": "cp src/index.d.ts dist/umd/index.d.ts",
+    "cp-dts-cjs": "cp src/index.d.ts dist/cjs/index.d.ts",
+    "cp-dts-dist": "cp src/index.d.ts dist/index.d.ts",
     "coverage": "nyc report --reporter=text-lcov | codecov --pipe",
     "lint": "eslint src/index.ts",
     "lint:fix": "eslint --fix src/index.ts",
